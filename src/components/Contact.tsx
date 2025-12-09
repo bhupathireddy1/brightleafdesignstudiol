@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { Phone, Mail, MapPin, Send, Clock } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, Clock, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import useScrollReveal from '@/hooks/useScrollReveal';
 
 const Contact = () => {
   const { toast } = useToast();
+  const { ref: leftRef, isRevealed: leftRevealed } = useScrollReveal();
+  const { ref: rightRef, isRevealed: rightRevealed } = useScrollReveal();
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,54 +31,65 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Phone',
-      value: '098853 01292',
-      href: 'tel:09885301292',
+      value: '+91 98853 01292',
+      href: 'tel:+919885301292',
+      action: 'Click to call',
     },
     {
       icon: Mail,
       title: 'Email',
       value: 'Satish@brightleafdesignstudio.com',
       href: 'mailto:Satish@brightleafdesignstudio.com',
+      action: 'Send email',
     },
     {
       icon: MapPin,
       title: 'Office',
       value: '5th Floor, Plot No 60, opposite ICICI Bank, Masjid Banda, Camelot Layout, Hyderabad 500084',
       href: 'https://share.google/pXij1i4bsCurJyyjm',
+      action: 'Get directions',
     },
     {
       icon: Clock,
       title: 'Hours',
       value: 'Mon - Sat: 10AM - 7PM',
       href: null,
+      action: null,
     },
   ];
 
   return (
     <section id="contact" className="py-24 bg-background">
       <div className="container mx-auto px-6">
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="text-primary font-semibold tracking-widest uppercase text-sm">
+            Get In Touch
+          </span>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6">
+            Let's Create Something{' '}
+            <span className="text-primary">Beautiful Together</span>
+          </h2>
+          <p className="text-muted-foreground text-lg md:text-xl">
+            Ready to transform your space? Contact us for a free consultation 
+            and let's discuss how we can bring your vision to life.
+          </p>
+        </div>
+
         <div className="grid lg:grid-cols-2 gap-16">
           {/* Contact Info */}
-          <div>
-            <span className="text-primary font-medium tracking-widest uppercase text-sm">
-              Get In Touch
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-semibold text-foreground mt-4 mb-6">
-              Let's Create Something Beautiful Together
-            </h2>
-            <p className="text-muted-foreground text-lg mb-10">
-              Ready to transform your space? Contact us for a free consultation 
-              and let's discuss how we can bring your vision to life.
-            </p>
-
+          <div 
+            ref={leftRef}
+            className={`scroll-reveal-left ${leftRevealed ? 'revealed' : ''}`}
+          >
             <div className="space-y-6">
               {contactInfo.map((item) => (
-                <div key={item.title} className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <item.icon className="w-6 h-6 text-primary" />
+                <div key={item.title} className="flex items-start gap-5 p-5 rounded-2xl bg-card hover:shadow-lg transition-shadow duration-300">
+                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-7 h-7 text-primary" />
                   </div>
-                  <div>
-                    <div className="text-sm text-muted-foreground mb-1">
+                  <div className="flex-1">
+                    <div className="text-sm text-muted-foreground mb-1 font-medium">
                       {item.title}
                     </div>
                     {item.href ? (
@@ -82,27 +97,54 @@ const Contact = () => {
                         href={item.href}
                         target={item.title === 'Office' ? '_blank' : undefined}
                         rel={item.title === 'Office' ? 'noopener noreferrer' : undefined}
-                        className="text-foreground font-medium hover:text-primary transition-colors"
+                        className="text-foreground font-semibold hover:text-primary transition-colors block mb-1"
                       >
                         {item.value}
                       </a>
                     ) : (
-                      <span className="text-foreground font-medium">
+                      <span className="text-foreground font-semibold block mb-1">
                         {item.value}
                       </span>
+                    )}
+                    {item.action && (
+                      <span className="text-primary text-sm font-medium">{item.action} →</span>
                     )}
                   </div>
                 </div>
               ))}
             </div>
+
+            {/* Quick Contact Buttons */}
+            <div className="flex flex-wrap gap-4 mt-8">
+              <Button size="lg" className="flex-1 min-w-[200px] font-semibold" asChild>
+                <a href="tel:+919885301292">
+                  <Phone className="w-5 h-5 mr-2" />
+                  Call Now
+                </a>
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="flex-1 min-w-[200px] font-semibold border-[hsl(142,70%,45%)] text-[hsl(142,70%,45%)] hover:bg-[hsl(142,70%,45%)] hover:text-[hsl(0,0%,100%)]" 
+                asChild
+              >
+                <a href="https://wa.me/919885301292" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  WhatsApp
+                </a>
+              </Button>
+            </div>
           </div>
 
           {/* Contact Form */}
-          <div className="bg-card rounded-2xl p-8 shadow-lg border border-border/50">
-            <h3 className="font-display text-2xl font-semibold text-foreground mb-6">
+          <div 
+            ref={rightRef}
+            className={`bg-card rounded-3xl p-8 md:p-10 shadow-xl border border-border/50 scroll-reveal-right ${rightRevealed ? 'revealed' : ''}`}
+          >
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8">
               Request a Free Quote
             </h3>
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Input
                   placeholder="Your Name"
@@ -111,7 +153,7 @@ const Contact = () => {
                     setFormData({ ...formData, name: e.target.value })
                   }
                   required
-                  className="bg-background"
+                  className="bg-background h-14 text-base px-5"
                 />
               </div>
               <div className="grid md:grid-cols-2 gap-5">
@@ -123,7 +165,7 @@ const Contact = () => {
                     setFormData({ ...formData, email: e.target.value })
                   }
                   required
-                  className="bg-background"
+                  className="bg-background h-14 text-base px-5"
                 />
                 <Input
                   type="tel"
@@ -133,7 +175,7 @@ const Contact = () => {
                     setFormData({ ...formData, phone: e.target.value })
                   }
                   required
-                  className="bg-background"
+                  className="bg-background h-14 text-base px-5"
                 />
               </div>
               <div>
@@ -145,15 +187,15 @@ const Contact = () => {
                   }
                   required
                   rows={5}
-                  className="bg-background resize-none"
+                  className="bg-background resize-none text-base px-5 py-4"
                 />
               </div>
-              <Button type="submit" size="lg" className="w-full">
+              <Button type="submit" size="lg" className="w-full h-14 text-base font-semibold">
                 <Send className="w-5 h-5 mr-2" />
                 Send Message
               </Button>
             </form>
-            <p className="text-center text-sm text-muted-foreground mt-4">
+            <p className="text-center text-muted-foreground mt-6 font-medium">
               We typically respond within 24 hours
             </p>
           </div>
