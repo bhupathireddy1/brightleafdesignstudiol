@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import logo from '@/assets/logo.svg';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -17,8 +18,8 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Portfolio', href: '#portfolio' },
+    { name: 'Services', href: '#expertise' },
+    { name: 'Portfolio', href: '#gallery' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -26,18 +27,13 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? 'bg-card/95 backdrop-blur-md shadow-lg py-3'
-          : 'bg-transparent py-6'
+          ? 'bg-card/98 backdrop-blur-lg shadow-lg py-3'
+          : 'bg-transparent py-5'
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <a href="#home" className="flex items-center gap-2">
-          <span className="font-display text-2xl md:text-3xl font-semibold text-foreground">
-            Brightleaf
-          </span>
-          <span className="hidden sm:inline font-serif text-sm text-muted-foreground tracking-widest uppercase">
-            Design Studio
-          </span>
+        <a href="#home" className="flex items-center gap-3">
+          <img src={logo} alt="Brightleaf Design Studio" className="h-12 w-auto" />
         </a>
 
         {/* Desktop Navigation */}
@@ -46,18 +42,18 @@ const Navbar = () => {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors duration-300 tracking-wide uppercase"
+              className="text-sm font-semibold text-foreground hover:text-primary transition-colors duration-300 tracking-wide"
             >
               {link.name}
             </a>
           ))}
           <Button
             variant="default"
-            size="sm"
-            className="ml-4"
+            size="default"
+            className="ml-4 font-semibold"
             asChild
           >
-            <a href="tel:09885301292">
+            <a href="tel:+919885301292">
               <Phone className="w-4 h-4 mr-2" />
               Get Quote
             </a>
@@ -86,13 +82,13 @@ const Navbar = () => {
               key={link.name}
               href={link.href}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-lg font-medium text-foreground/80 hover:text-primary transition-colors py-2 border-b border-border/50"
+              className="text-lg font-semibold text-foreground hover:text-primary transition-colors py-2 border-b border-border/50"
             >
               {link.name}
             </a>
           ))}
-          <Button variant="default" className="mt-4" asChild>
-            <a href="tel:09885301292">
+          <Button variant="default" className="mt-4 font-semibold" asChild>
+            <a href="tel:+919885301292">
               <Phone className="w-4 h-4 mr-2" />
               Call Now
             </a>
