@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { Phone, Mail, MapPin, Send, Clock, MessageCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, Clock, MessageCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import useScrollReveal from '@/hooks/useScrollReveal';
+import { supabase } from '@/integrations/supabase/client';
 
 const Contact = () => {
   const { toast } = useToast();
   const { ref: leftRef, isRevealed: leftRevealed } = useScrollReveal();
   const { ref: rightRef, isRevealed: rightRevealed } = useScrollReveal();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -18,13 +20,32 @@ const Contact = () => {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: 'Message Sent!',
-      description: 'We will get back to you within 24 hours.',
-    });
-    setFormData({ name: '', email: '', phone: '', message: '' });
+    setIsSubmitting(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Message Sent!',
+        description: 'We will get back to you within 24 hours.',
+      });
+      setFormData({ name: '', email: '', phone: '', message: '' });
+    } catch (error: any) {
+      console.error('Error sending message:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send message. Please try again or call us directly.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -190,9 +211,13 @@ const Contact = () => {
                   className="bg-background resize-none text-base px-5 py-4"
                 />
               </div>
-              <Button type="submit" size="lg" className="w-full h-14 text-base font-semibold">
-                <Send className="w-5 h-5 mr-2" />
-                Send Message
+              <Button type="submit" size="lg" className="w-full h-14 text-base font-semibold" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                ) : (
+                  <Send className="w-5 h-5 mr-2" />
+                )}
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </Button>
             </form>
             <p className="text-center text-muted-foreground mt-6 font-medium">
