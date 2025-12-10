@@ -1,6 +1,9 @@
 import { Phone, Mail, MapPin, Instagram, Facebook, Linkedin } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import useScrollReveal from '@/hooks/useScrollReveal';
 
 const Footer = () => {
+  const { ref, isRevealed } = useScrollReveal();
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
@@ -24,7 +27,7 @@ const Footer = () => {
     <footer className="bg-foreground text-primary-foreground">
       {/* Main Footer */}
       <div className="container mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div ref={ref} className={`grid md:grid-cols-2 lg:grid-cols-4 gap-12 scroll-reveal ${isRevealed ? 'revealed' : ''}`}>
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="mb-6">
@@ -130,18 +133,18 @@ const Footer = () => {
             © {currentYear} Brightleaf Design Studio. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a
-              href="#"
+            <Link
+              to="/privacy-policy"
               className="text-primary-foreground/60 hover:text-primary transition-colors text-sm"
             >
               Privacy Policy
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/terms-of-service"
               className="text-primary-foreground/60 hover:text-primary transition-colors text-sm"
             >
               Terms of Service
-            </a>
+            </Link>
           </div>
         </div>
       </div>
