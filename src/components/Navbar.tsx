@@ -36,7 +36,7 @@ const Navbar = () => {
           <img 
             src={logo} 
             alt="Brightleaf Design Studio" 
-            className={`h-10 w-auto transition-all duration-300 ${isScrolled ? '' : 'brightness-0 invert'}`}
+            className="h-14 w-auto transition-all duration-300"
           />
         </a>
 
