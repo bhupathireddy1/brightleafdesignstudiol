@@ -33,7 +33,11 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         <a href="#home" className="flex items-center gap-3">
-          <img src={logo} alt="Brightleaf Design Studio" className="h-12 w-auto" />
+          <img 
+            src={logo} 
+            alt="Brightleaf Design Studio" 
+            className={`h-10 w-auto transition-all duration-300 ${isScrolled ? '' : 'brightness-0 invert'}`}
+          />
         </a>
 
         {/* Desktop Navigation */}
@@ -42,7 +46,11 @@ const Navbar = () => {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-semibold text-foreground hover:text-primary transition-colors duration-300 tracking-wide"
+              className={`text-sm font-semibold transition-colors duration-300 tracking-wide ${
+                isScrolled 
+                  ? 'text-foreground hover:text-primary' 
+                  : 'text-white hover:text-white/70'
+              }`}
             >
               {link.name}
             </a>
@@ -63,7 +71,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden p-2 text-foreground"
+          className={`lg:hidden p-2 transition-colors ${isScrolled ? 'text-foreground' : 'text-white'}`}
           aria-label="Toggle menu"
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
