@@ -80,18 +80,18 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="py-24 bg-background">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="contact" className="py-24 bg-background overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6 overflow-hidden">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16 px-2">
           <span className="text-primary font-semibold tracking-widest uppercase text-sm">
             Get In Touch
           </span>
-          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6">
             Let's Create Something{' '}
             <span className="text-primary">Beautiful Together</span>
           </h2>
-          <p className="text-muted-foreground text-lg md:text-xl">
+          <p className="text-muted-foreground text-base md:text-lg lg:text-xl">
             Ready to transform your space? Contact us for a free consultation 
             and let's discuss how we can bring your vision to life.
           </p>
@@ -101,15 +101,15 @@ const Contact = () => {
           {/* Contact Info */}
           <div 
             ref={leftRef}
-            className={`max-w-xl mx-auto w-full scroll-reveal-left ${leftRevealed ? 'revealed' : ''}`}
+            className={`w-full scroll-reveal-left ${leftRevealed ? 'revealed' : ''}`}
           >
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {contactInfo.map((item) => (
-                <div key={item.title} className="flex items-start gap-5 p-5 rounded-2xl bg-card hover:shadow-lg transition-shadow duration-300">
-                  <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <item.icon className="w-7 h-7 text-primary" />
+                <div key={item.title} className="flex items-start gap-4 p-4 md:p-5 rounded-2xl bg-card hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <item.icon className="w-6 h-6 md:w-7 md:h-7 text-primary" />
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0 overflow-hidden">
                     <div className="text-sm text-muted-foreground mb-1 font-medium">
                       {item.title}
                     </div>
@@ -118,12 +118,12 @@ const Contact = () => {
                         href={item.href}
                         target={item.title === 'Office' ? '_blank' : undefined}
                         rel={item.title === 'Office' ? 'noopener noreferrer' : undefined}
-                        className="text-foreground font-semibold hover:text-primary transition-colors block mb-1"
+                        className="text-foreground font-semibold hover:text-primary transition-colors block mb-1 break-words text-sm md:text-base"
                       >
                         {item.value}
                       </a>
                     ) : (
-                      <span className="text-foreground font-semibold block mb-1">
+                      <span className="text-foreground font-semibold block mb-1 break-words text-sm md:text-base">
                         {item.value}
                       </span>
                     )}
@@ -136,8 +136,8 @@ const Contact = () => {
             </div>
 
             {/* Quick Contact Buttons */}
-            <div className="flex flex-wrap gap-4 mt-8">
-              <Button size="lg" className="flex-1 min-w-[200px] font-semibold" asChild>
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
+              <Button size="lg" className="flex-1 font-semibold" asChild>
                 <a href="tel:+919885301292">
                   <Phone className="w-5 h-5 mr-2" />
                   Call Now
@@ -146,7 +146,7 @@ const Contact = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="flex-1 min-w-[200px] font-semibold border-[hsl(142,70%,45%)] text-[hsl(142,70%,45%)] hover:bg-[hsl(142,70%,45%)] hover:text-[hsl(0,0%,100%)]" 
+                className="flex-1 font-semibold border-[hsl(142,70%,45%)] text-[hsl(142,70%,45%)] hover:bg-[hsl(142,70%,45%)] hover:text-[hsl(0,0%,100%)]" 
                 asChild
               >
                 <a href="https://wa.me/919885301292" target="_blank" rel="noopener noreferrer">
@@ -160,7 +160,7 @@ const Contact = () => {
           {/* Contact Form */}
           <div 
             ref={rightRef}
-            className={`max-w-xl mx-auto w-full bg-card rounded-3xl p-8 md:p-10 shadow-xl border border-border/50 scroll-reveal-right ${rightRevealed ? 'revealed' : ''}`}
+            className={`w-full bg-card rounded-3xl p-6 md:p-8 lg:p-10 shadow-xl border border-border/50 scroll-reveal-right ${rightRevealed ? 'revealed' : ''}`}
           >
             <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8">
               Request a Free Quote
