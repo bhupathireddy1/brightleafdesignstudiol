@@ -7,7 +7,7 @@ const Stats = () => {
 
   const stats = [
     { value: 950, suffix: '+', label: 'Projects Completed' },
-    { value: 180, suffix: '+', label: 'Happy Clients' },
+    { value: 950, suffix: '+', label: 'Happy Clients' },
     { value: 12, suffix: '+', label: 'Years Experience' },
     { value: 15, suffix: '', label: 'Design Awards' },
   ];

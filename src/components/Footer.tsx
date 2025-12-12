@@ -153,7 +153,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="text-primary-foreground/70 hover:text-primary transition-colors text-sm cursor-pointer"
                 >
-                  5th Floor, Plot No 60, Masjid Banda, Hyderabad 500084
+                  5th Floor, Plot No 60, opposite ICICI Bank, Camelot Layout, Kondapur, Hyderabad, Telangana 500084
                 </a>
               </li>
             </ul>

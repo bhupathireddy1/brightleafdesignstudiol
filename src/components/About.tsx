@@ -17,8 +17,8 @@ const About = () => {
   ];
 
   const stats = [
-    { icon: Award, number: '10+', label: 'Years of Excellence' },
-    { icon: Users, number: '500+', label: 'Happy Clients' },
+    { icon: Award, number: '12+', label: 'Years of Excellence' },
+    { icon: Users, number: '950+', label: 'Happy Clients' },
     { icon: Clock, number: '45', label: 'Days Avg. Delivery' },
   ];
 
@@ -53,7 +53,7 @@ const About = () => {
             
             {/* Floating Card */}
             <div className="absolute -top-8 -left-8 bg-primary text-primary-foreground p-6 rounded-2xl shadow-xl max-w-[200px] hidden md:block">
-              <div className="font-display text-5xl font-bold">10+</div>
+              <div className="font-display text-5xl font-bold">12+</div>
               <div className="text-sm opacity-90 mt-1 font-medium">Years Crafting Beautiful Spaces</div>
             </div>
           </div>
