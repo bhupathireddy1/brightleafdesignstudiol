@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import logo from '@/assets/logo.svg';
+import logo from '@/assets/brightleaf-logo.jpg';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,11 +33,15 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         <a href="#home" className="flex items-center gap-3">
-          <div className={`transition-all duration-300 ${isScrolled ? 'bg-foreground/90 rounded-lg p-2' : ''}`}>
-            <img 
-              src={logo} 
-              alt="Brightleaf Design Studio" 
-              className={`transition-all duration-300 ${isScrolled ? 'h-12 w-auto brightness-0 invert' : 'h-16 w-auto'}`}
+          <div
+            className={`transition-all duration-300 rounded-2xl border border-border/40 shadow-md ${
+              isScrolled ? 'bg-background/95 px-4 py-2' : 'bg-background/80 px-5 py-3'
+            }`}
+          >
+            <img
+              src={logo}
+              alt="Brightleaf Design Studio logo"
+              className="transition-all duration-300 h-10 md:h-12 lg:h-14 w-auto object-contain"
             />
           </div>
         </a>
