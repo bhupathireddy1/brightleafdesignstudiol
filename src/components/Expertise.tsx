@@ -1,10 +1,6 @@
+import { Home, Building2, Grid3X3, MessageSquare, Hammer, Crown, Star, ArrowRight } from 'lucide-react';
 import useScrollReveal from '@/hooks/useScrollReveal';
-import heroImage from '@/assets/hero-living-room.jpg';
-import bedroomImage from '@/assets/bedroom-design.jpg';
-import kitchenImage from '@/assets/kitchen-design.jpg';
-import officeImage from '@/assets/office-design.jpg';
-import diningImage from '@/assets/dining-design.jpg';
-import bathroomImage from '@/assets/bathroom-design.jpg';
+import { Button } from '@/components/ui/button';
 
 const Expertise = () => {
   const { ref: headerRef, isRevealed: headerRevealed } = useScrollReveal();
@@ -13,51 +9,57 @@ const Expertise = () => {
   const expertiseAreas = [
     {
       id: 1,
-      title: 'Living Room Design',
-      subtitle: 'Create Comfort',
-      description: 'Transform your living space into a stunning sanctuary of comfort and style.',
-      image: heroImage,
+      title: 'Complete Home Design',
+      description: 'End-to-end home interior design from living rooms to bedrooms, creating cohesive and comfortable living spaces.',
+      icon: Home,
+      features: ['3D Visualization', 'Space Planning', 'Furniture Selection', 'Color Consultation'],
+      popular: false,
     },
     {
       id: 2,
-      title: 'Bedroom Interiors',
-      subtitle: 'Peaceful Retreats',
-      description: 'Design serene bedrooms that promote rest and reflect your personal style.',
-      image: bedroomImage,
+      title: 'Commercial Interiors',
+      description: 'Professional retail space design that enhances productivity and brand image.',
+      icon: Building2,
+      features: ['Retail Spaces', 'Brand Integration', 'Ergonomic Design', 'Custom Solutions'],
+      popular: true,
     },
     {
       id: 3,
-      title: 'Kitchen Solutions',
-      subtitle: 'Heart of Home',
-      description: 'Functional and beautiful kitchens designed for modern living.',
-      image: kitchenImage,
+      title: 'Modular Solutions',
+      description: 'Smart modular furniture and storage solutions for modern homes and offices.',
+      icon: Grid3X3,
+      features: ['Custom Wardrobes', 'Kitchen Modules', 'Storage Solutions', 'Space Optimization'],
+      popular: false,
     },
     {
       id: 4,
-      title: 'Office Spaces',
-      subtitle: 'Productive Environments',
-      description: 'Inspiring workspaces that boost productivity and creativity.',
-      image: officeImage,
+      title: 'Design Consultation',
+      description: 'Expert design advice and guidance for DIY enthusiasts and budget-conscious clients.',
+      icon: MessageSquare,
+      features: ['Design Plans', 'Material Selection', 'Color Schemes', 'Style Guidance'],
+      popular: false,
     },
     {
       id: 5,
-      title: 'Dining Areas',
-      subtitle: 'Gather & Celebrate',
-      description: 'Elegant dining spaces perfect for memorable gatherings.',
-      image: diningImage,
+      title: 'Renovation Services',
+      description: 'Complete renovation management from planning to execution, transforming existing spaces.',
+      icon: Hammer,
+      features: ['Project Management', 'Contractor Coordination', 'Timeline Planning', 'Quality Control'],
+      popular: false,
     },
     {
       id: 6,
-      title: 'Bathroom Design',
-      subtitle: 'Spa Experience',
-      description: 'Luxurious bathrooms that feel like a personal spa retreat.',
-      image: bathroomImage,
+      title: 'Luxury Design',
+      description: 'Premium luxury interior design services for high-end residential and commercial projects.',
+      icon: Crown,
+      features: ['Luxury Materials', 'Bespoke Furniture', 'Premium Finishes', 'Exclusive Design'],
+      popular: false,
     },
   ];
 
   return (
     <section id="expertise" className="py-24 bg-background">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 md:px-6">
         {/* Header */}
         <div 
           ref={headerRef}
@@ -78,53 +80,77 @@ const Expertise = () => {
         {/* Expertise Grid */}
         <div 
           ref={gridRef}
-          className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-reveal ${gridRevealed ? 'revealed' : ''}`}
+          className={`grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 scroll-reveal ${gridRevealed ? 'revealed' : ''}`}
         >
           {expertiseAreas.map((area, index) => (
             <div
               key={area.id}
-              className="group relative rounded-2xl overflow-hidden bg-card shadow-lg hover:shadow-2xl transition-all duration-500"
+              className={`group relative rounded-2xl bg-card p-6 md:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border ${
+                area.popular ? 'border-primary ring-2 ring-primary/20' : 'border-border/50'
+              }`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
-              {/* Image */}
-              <div className="aspect-[16/10] overflow-hidden">
-                <img
-                  src={area.image}
-                  alt={`${area.title} - Interior design expertise`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
+              {/* Popular Badge */}
+              {area.popular && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
+                    <Star className="w-3 h-3 fill-current" />
+                    Most Popular
+                  </span>
+                </div>
+              )}
+
+              {/* Icon */}
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${
+                area.popular ? 'bg-primary/20 text-primary' : 'bg-muted text-primary'
+              }`}>
+                <area.icon className="w-6 h-6" />
               </div>
               
               {/* Content */}
-              <div className="p-6">
-                <span className="text-primary text-sm font-semibold uppercase tracking-wider">
-                  {area.subtitle}
-                </span>
-                <h3 className="font-display text-2xl font-bold text-foreground mt-2 mb-3 group-hover:text-primary transition-colors duration-300">
-                  {area.title}
-                </h3>
-                <p className="text-muted-foreground">
-                  {area.description}
-                </p>
-              </div>
+              <h3 className="font-display text-xl md:text-2xl font-bold text-foreground mb-3">
+                {area.title}
+              </h3>
+              <p className="text-muted-foreground text-sm md:text-base mb-6">
+                {area.description}
+              </p>
 
-              {/* Hover Border Effect */}
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary/30 rounded-2xl transition-all duration-500 pointer-events-none" />
+              {/* Features */}
+              <ul className="space-y-2 mb-6">
+                {area.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Divider */}
+              <div className="border-t border-border/50 pt-6 mt-auto">
+                {/* Rating */}
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-[hsl(45,93%,58%)] text-[hsl(45,93%,58%)]" />
+                  ))}
+                </div>
+
+                {/* CTA Button */}
+                <Button 
+                  className={`w-full font-semibold ${
+                    area.popular 
+                      ? 'bg-primary hover:bg-primary/90' 
+                      : 'bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground'
+                  }`}
+                  asChild
+                >
+                  <a href="#contact">
+                    Get Quote
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </a>
+                </Button>
+              </div>
             </div>
           ))}
-        </div>
-
-        {/* CTA */}
-        <div className="text-center mt-16">
-          <p className="text-muted-foreground mb-4 text-lg">
-            Not sure which service you need?
-          </p>
-          <a
-            href="#contact"
-            className="inline-flex items-center text-primary font-semibold text-lg hover:underline underline-offset-4"
-          >
-            Book Free Consultation →
-          </a>
         </div>
       </div>
     </section>

@@ -177,7 +177,7 @@ const Contact = () => {
                   className="bg-background h-14 text-base px-5"
                 />
               </div>
-              <div className="grid md:grid-cols-2 gap-5">
+              <div>
                 <Input
                   type="email"
                   placeholder="Email Address"
@@ -188,6 +188,8 @@ const Contact = () => {
                   required
                   className="bg-background h-14 text-base px-5"
                 />
+              </div>
+              <div>
                 <Input
                   type="tel"
                   placeholder="Phone Number"
