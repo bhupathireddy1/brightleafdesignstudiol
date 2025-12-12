@@ -31,13 +31,13 @@ const Navbar = () => {
           : 'bg-transparent py-5'
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        <a href="#home" className="flex items-center">
+      <div className="container mx-auto px-6 flex items-center justify-between lg:justify-between">
+        <a href="#home" className="flex items-center lg:flex-none flex-1 justify-center lg:justify-start">
           <img
             src={logo}
             alt="Brightleaf Design Studio logo"
             className={`transition-all duration-300 w-auto object-contain ${
-              isScrolled ? 'h-10 md:h-12' : 'h-12 md:h-16 lg:h-20'
+              isScrolled ? 'h-12 md:h-14' : 'h-14 md:h-18 lg:h-22'
             }`}
           />
         </a>
