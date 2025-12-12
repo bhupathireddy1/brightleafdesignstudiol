@@ -8,30 +8,53 @@ const Blog = () => {
   const blogPosts = [
     {
       id: 1,
-      title: '10 Living Room Design Trends for 2024',
-      excerpt: 'Discover the latest trends shaping modern living spaces, from biophilic design to sustainable materials that are transforming homes.',
+      title: 'Luxury 3BHK Apartment Makeover in Kondapur',
+      excerpt:
+        'See how we transformed a dated 3BHK into a warm, luxurious home with custom furniture, layered lighting, and smart storage.',
       author: 'Satish',
-      date: 'Dec 5, 2024',
-      category: 'Design Trends',
-      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=400&fit=crop',
+      date: 'Dec 10, 2024',
+      category: 'Project Showcase',
+      image: 'https://images.unsplash.com/photo-1505691723518-36a5ac3be353?w=600&h=400&fit=crop',
     },
     {
       id: 2,
-      title: 'How to Choose the Perfect Color Palette for Your Home',
-      excerpt: 'A comprehensive guide to selecting colors that create harmony and reflect your personality in every room of your house.',
+      title: 'Modern Office Interiors that Boost Productivity',
+      excerpt:
+        'Thoughtfully designed workspaces that balance focus, collaboration, and brand identity for growing businesses.',
       author: 'Satish',
-      date: 'Nov 28, 2024',
-      category: 'Tips & Guides',
-      image: 'https://images.unsplash.com/photo-1615529328331-f8917597711f?w=600&h=400&fit=crop',
+      date: 'Dec 3, 2024',
+      category: 'Commercial Design',
+      image: 'https://images.unsplash.com/photo-1522204502588-56c0244b0a09?w=600&h=400&fit=crop',
     },
     {
       id: 3,
-      title: 'Small Space, Big Impact: Maximizing Your Apartment',
-      excerpt: 'Smart solutions and clever design tricks to make the most of compact living spaces without compromising on style.',
+      title: '5 Interior Design Mistakes to Avoid in Your New Home',
+      excerpt:
+        'From wrong furniture sizes to poor lighting, avoid these common mistakes to save time, money, and frustration.',
       author: 'Satish',
-      date: 'Nov 20, 2024',
-      category: 'Small Spaces',
-      image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop',
+      date: 'Nov 25, 2024',
+      category: 'Design Tips',
+      image: 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=600&h=400&fit=crop',
+    },
+    {
+      id: 4,
+      title: 'How to Choose the Right Wardrobes & Storage Solutions',
+      excerpt:
+        'Plan your wardrobes smartly with the right materials, hardware, and internal layouts for a clutter-free home.',
+      author: 'Satish',
+      date: 'Nov 18, 2024',
+      category: 'Storage & Planning',
+      image: 'https://images.unsplash.com/photo-1615529182904-14819c35db37?w=600&h=400&fit=crop',
+    },
+    {
+      id: 5,
+      title: 'Budget-Friendly Interior Design Ideas for 2BHK Homes',
+      excerpt:
+        'Practical ideas to achieve a premium look on a realistic budget using smart materials and design choices.',
+      author: 'Satish',
+      date: 'Nov 10, 2024',
+      category: 'Budget Design',
+      image: 'https://images.unsplash.com/photo-1519710884009-22a691c92f02?w=600&h=400&fit=crop',
     },
   ];
 

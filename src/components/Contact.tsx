@@ -81,13 +81,13 @@ const Contact = () => {
 
   return (
     <section id="contact" className="py-24 bg-background">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 md:px-6">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-primary font-semibold tracking-widest uppercase text-sm">
             Get In Touch
           </span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6">
+          <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6">
             Let's Create Something{' '}
             <span className="text-primary">Beautiful Together</span>
           </h2>
@@ -97,11 +97,11 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start max-w-6xl mx-auto">
           {/* Contact Info */}
           <div 
             ref={leftRef}
-            className={`scroll-reveal-left ${leftRevealed ? 'revealed' : ''}`}
+            className={`max-w-xl mx-auto w-full scroll-reveal-left ${leftRevealed ? 'revealed' : ''}`}
           >
             <div className="space-y-6">
               {contactInfo.map((item) => (
@@ -160,7 +160,7 @@ const Contact = () => {
           {/* Contact Form */}
           <div 
             ref={rightRef}
-            className={`bg-card rounded-3xl p-8 md:p-10 shadow-xl border border-border/50 scroll-reveal-right ${rightRevealed ? 'revealed' : ''}`}
+            className={`max-w-xl mx-auto w-full bg-card rounded-3xl p-8 md:p-10 shadow-xl border border-border/50 scroll-reveal-right ${rightRevealed ? 'revealed' : ''}`}
           >
             <h3 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8">
               Request a Free Quote

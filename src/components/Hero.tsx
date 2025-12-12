@@ -84,8 +84,8 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+      {/* Scroll Indicator - hidden on mobile to avoid overlapping stats */}
+      <div className="hidden md:block absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
         <div className="w-7 h-12 rounded-full border-2 border-[hsl(0,0%,100%)]/40 flex items-start justify-center p-2">
           <div className="w-1.5 h-3 bg-[hsl(0,0%,100%)]/60 rounded-full animate-pulse" />
         </div>
