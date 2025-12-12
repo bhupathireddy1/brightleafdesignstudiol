@@ -1,7 +1,7 @@
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import useScrollReveal from '@/hooks/useScrollReveal';
-import logo from '@/assets/logo.svg';
+import logo from '@/assets/brightleaf-logo.png';
 
 const Footer = () => {
   const { ref, isRevealed } = useScrollReveal();
@@ -12,6 +12,7 @@ const Footer = () => {
     { name: 'About Us', href: '#about' },
     { name: 'Services', href: '#expertise' },
     { name: 'Portfolio', href: '#gallery' },
+    { name: 'Blog', href: '#blog' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -65,7 +66,7 @@ const Footer = () => {
               <img 
                 src={logo} 
                 alt="Brightleaf Design Studio" 
-                className="h-16 w-auto brightness-0 invert"
+                className="h-16 w-auto"
               />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed mb-6">

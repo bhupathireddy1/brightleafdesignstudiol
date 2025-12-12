@@ -22,7 +22,7 @@ const Index = () => {
       <Expertise />
       <DesignGallery />
       <Stats />
-      <Blog />
+      {/* Blog section hidden from homepage, available at #blog */}
       <Testimonials />
       <FAQ />
       <Contact />
