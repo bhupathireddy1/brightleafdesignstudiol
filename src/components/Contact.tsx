@@ -66,7 +66,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: 'Office',
-      value: '5th Floor, Plot No 60, opposite ICICI Bank, Masjid Banda, Camelot Layout, Hyderabad 500084',
+      value: '5th Floor, Plot No 60, opposite ICICI Bank, Camelot Layout, Kondapur, Hyderabad, Telangana 500084',
       href: 'https://share.google/pXij1i4bsCurJyyjm',
       action: 'Get directions',
     },

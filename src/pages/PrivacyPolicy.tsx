@@ -85,7 +85,7 @@ const PrivacyPolicy = () => {
               <strong>Phone:</strong> 098853 01292
             </p>
             <p>
-              <strong>Address:</strong> 5th Floor, Plot No 60, Masjid Banda, Hyderabad 500084
+              <strong>Address:</strong> 5th Floor, Plot No 60, opposite ICICI Bank, Camelot Layout, Kondapur, Hyderabad, Telangana 500084
             </p>
           </section>
         </div>

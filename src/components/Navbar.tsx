@@ -27,17 +27,19 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? 'bg-card/98 backdrop-blur-lg shadow-lg py-3'
+          ? 'bg-card/98 backdrop-blur-lg shadow-lg py-2'
           : 'bg-transparent py-5'
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         <a href="#home" className="flex items-center gap-3">
-          <img 
-            src={logo} 
-            alt="Brightleaf Design Studio" 
-            className="h-14 w-auto transition-all duration-300"
-          />
+          <div className={`transition-all duration-300 ${isScrolled ? 'bg-foreground/90 rounded-lg p-2' : ''}`}>
+            <img 
+              src={logo} 
+              alt="Brightleaf Design Studio" 
+              className={`transition-all duration-300 ${isScrolled ? 'h-12 w-auto brightness-0 invert' : 'h-16 w-auto'}`}
+            />
+          </div>
         </a>
 
         {/* Desktop Navigation */}
