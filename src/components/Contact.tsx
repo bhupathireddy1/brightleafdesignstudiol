@@ -136,17 +136,21 @@ const Contact = () => {
             </div>
 
             {/* Quick Contact Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mt-8">
-              <Button size="lg" className="flex-1 font-semibold" asChild>
+            <div className="mt-8 w-full max-w-sm mx-auto sm:max-w-none sm:mx-0 flex flex-col sm:flex-row gap-3">
+              <Button
+                size="lg"
+                className="w-full sm:flex-1 h-14 rounded-full font-semibold"
+                asChild
+              >
                 <a href="tel:+919885301292">
                   <Phone className="w-5 h-5 mr-2" />
                   Call Now
                 </a>
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="flex-1 font-semibold border-[hsl(142,70%,45%)] text-[hsl(142,70%,45%)] hover:bg-[hsl(142,70%,45%)] hover:text-[hsl(0,0%,100%)]" 
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:flex-1 h-14 rounded-full font-semibold border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                 asChild
               >
                 <a href="https://wa.me/919885301292" target="_blank" rel="noopener noreferrer">
