@@ -15,9 +15,7 @@ const Hero = () => {
           <div className="animate-fade-up" style={{
           animationDelay: "0.1s"
         }}>
-            <span className="inline-block px-5 bg-primary text-primary-foreground text-sm font-semibold tracking-widest uppercase rounded-full mb-8 my-px py-px">
-              Premium Interior Design
-            </span>
+            
           </div>
 
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-[hsl(0,0%,100%)] leading-[1.1] mb-8 animate-fade-up uppercase tracking-tight" style={{
