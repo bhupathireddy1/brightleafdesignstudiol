@@ -19,7 +19,7 @@ const Stats = () => {
   }, [isRevealed, hasAnimated]);
 
   return (
-    <section className="py-20 bg-primary">
+    <section className="py-12 md:py-16 bg-primary">
       <div className="container mx-auto px-6">
         <div
           ref={ref}

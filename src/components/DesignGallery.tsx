@@ -104,7 +104,7 @@ const DesignGallery = () => {
       : projects.filter((p) => p.category === activeFilter);
 
   return (
-    <section id="gallery" className="py-24 bg-secondary">
+    <section id="gallery" className="py-16 md:py-20 bg-secondary">
       <div className="container mx-auto px-6">
         {/* Header */}
         <div 
