@@ -109,7 +109,7 @@ const DesignGallery = () => {
         {/* Header */}
         <div 
           ref={headerRef}
-          className={`text-center max-w-3xl mx-auto mb-16 scroll-reveal ${headerRevealed ? 'revealed' : ''}`}
+          className={`text-center max-w-3xl mx-auto mb-10 scroll-reveal ${headerRevealed ? 'revealed' : ''}`}
         >
           <span className="text-primary font-semibold tracking-widest uppercase text-sm">
             Our Portfolio
