@@ -30,7 +30,7 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-24 bg-primary/5">
+    <section className="py-16 md:py-20 bg-primary/5">
       <div className="container mx-auto px-6">
         <div ref={ref} className={`scroll-reveal ${isRevealed ? 'revealed' : ''}`}>
           {/* Header */}
