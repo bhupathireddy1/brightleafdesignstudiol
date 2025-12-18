@@ -83,7 +83,7 @@ const Contact = () => {
     <section id="contact" className="py-16 md:py-20 bg-background overflow-hidden">
       <div className="container mx-auto px-4 md:px-6 overflow-hidden">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 px-2">
+        <div className="text-center max-w-3xl mx-auto mb-10 px-2">
           <span className="text-primary font-semibold tracking-widest uppercase text-sm">
             Get In Touch
           </span>

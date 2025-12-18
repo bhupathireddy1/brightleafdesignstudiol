@@ -34,7 +34,7 @@ const Testimonials = () => {
       <div className="container mx-auto px-6">
         <div ref={ref} className={`scroll-reveal ${isRevealed ? 'revealed' : ''}`}>
           {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-primary font-medium tracking-widest uppercase text-sm">
               Testimonials
             </span>

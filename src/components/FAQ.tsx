@@ -50,7 +50,7 @@ const FAQ = () => {
           className={`scroll-reveal ${isRevealed ? 'revealed' : ''}`}
         >
           {/* Header */}
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-primary font-semibold tracking-widest uppercase text-sm">
               FAQ
             </span>

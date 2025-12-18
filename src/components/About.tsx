@@ -25,7 +25,7 @@ const About = () => {
   return (
     <section id="about" className="py-16 md:py-20 bg-card">
       <div className="container mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Image Column */}
           <div 
             ref={leftRef}
