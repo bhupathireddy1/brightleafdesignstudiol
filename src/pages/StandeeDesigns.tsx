@@ -1,63 +1,63 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Download, ArrowLeft, Shuffle, Eye, X, Phone, Globe, MessageCircle, Award, CheckCircle, Users, Star, Shield, Clock, Sparkles } from "lucide-react";
+import { Download, ArrowLeft, Shuffle, Eye, X, Phone, Globe, MessageCircle, Award, CheckCircle, Users, Star, Shield, Clock, Sparkles, MapPin, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { QRCodeSVG } from "qrcode.react";
 import logo from "@/assets/brightleaf-logo.png";
 import heroImage from "@/assets/hero-living-room.jpg";
 
-// 10 standee designs - 5 original + 5 new attention-grabbing with trust badges
+// Bright and colorful standee designs
 const standeeConfigs = [
   {
     id: 1,
     type: "premium",
     headline: "Your Flat Can Look Like This Too.",
     subtext: "Complete interior solutions — design to execution.",
-    bg: "#1a1a1a",
-    accentColor: "#d4af37",
+    bg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    accentColor: "#ffd700",
   },
   {
     id: 2,
     type: "conversion",
     headline: "Why Should Only This Flat Look This Good?",
     subtext: "Get the same premium interiors for your new flat.",
-    bg: "#0a2540",
-    accentColor: "#00c2ff",
+    bg: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+    accentColor: "#ffffff",
   },
   {
     id: 3,
     type: "process",
     headline: "All Your Interiors. One Team.",
     subtext: "From concept to completion, we handle everything.",
-    bg: "#ffffff",
-    accentColor: "#2d5a3d",
+    bg: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+    accentColor: "#1a1a1a",
   },
   {
     id: 4,
     type: "fun",
     headline: "This Flat Today. Yours Next?",
     subtext: "Same design. Your address. Let's make it happen.",
-    bg: "#fffbeb",
-    accentColor: "#b45309",
+    bg: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+    accentColor: "#1a1a1a",
   },
   {
     id: 5,
     type: "minimal",
     headline: "Designed. Built. Delivered.",
     subtext: "End-to-end interior solutions for your home.",
-    bg: "#18181b",
-    accentColor: "#22c55e",
+    bg: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+    accentColor: "#2d5a3d",
   },
-  // NEW 5 attention-grabbing designs with trust badges
   {
     id: 6,
     type: "trust",
     headline: "500+ Happy Homes Designed",
     subtext: "Join our growing family of satisfied homeowners.",
-    bg: "#0f172a",
-    accentColor: "#f59e0b",
+    bg: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
+    accentColor: "#d63384",
     trustBadges: ["500+ Projects", "10+ Years", "4.9★ Rating"],
   },
   {
@@ -65,8 +65,8 @@ const standeeConfigs = [
     type: "urgency",
     headline: "Limited Time Offer!\nFree 3D Design",
     subtext: "Book your consultation today and get a complimentary 3D visualization.",
-    bg: "#7c2d12",
-    accentColor: "#fbbf24",
+    bg: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
+    accentColor: "#c41e3a",
     trustBadges: ["Free Consultation", "No Hidden Costs"],
   },
   {
@@ -74,8 +74,8 @@ const standeeConfigs = [
     type: "guarantee",
     headline: "100% Satisfaction Guaranteed",
     subtext: "We don't stop until you love your space.",
-    bg: "#1e293b",
-    accentColor: "#10b981",
+    bg: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
+    accentColor: "#0d6efd",
     trustBadges: ["Money Back Guarantee", "On-Time Delivery", "Premium Materials"],
   },
   {
@@ -83,8 +83,8 @@ const standeeConfigs = [
     type: "social",
     headline: "See What Others Are Saying",
     subtext: "\"Best decision we made for our home!\" - Happy Customer",
-    bg: "#fef3c7",
-    accentColor: "#dc2626",
+    bg: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)",
+    accentColor: "#6f42c1",
     trustBadges: ["4.9/5 Google Rating", "100+ Reviews"],
   },
   {
@@ -92,8 +92,8 @@ const standeeConfigs = [
     type: "exclusive",
     headline: "Exclusive Model Flat Offer",
     subtext: "Special pricing for Prosperiti Homes residents only.",
-    bg: "#1a1a1a",
-    accentColor: "#a855f7",
+    bg: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
+    accentColor: "#dc3545",
     trustBadges: ["Exclusive Deal", "Limited Slots", "VIP Service"],
   },
 ];
@@ -118,25 +118,46 @@ const processSteps = [
   { label: "Enjoy", icon: Star },
 ];
 
+// Contact Info
+const contactInfo = {
+  phone: "98853 01292",
+  website: "brightleaf.co.in",
+  address: "Hyderabad, Telangana",
+};
+
+// Generate vCard data for "Add to Contacts"
+const generateVCard = () => {
+  return `BEGIN:VCARD
+VERSION:3.0
+FN:Brightleaf Design Studio
+ORG:Brightleaf Design Studio
+TEL;TYPE=WORK,VOICE:+91${contactInfo.phone.replace(/\s/g, '')}
+URL:https://${contactInfo.website}
+ADR;TYPE=WORK:;;${contactInfo.address};;;India
+END:VCARD`;
+};
+
 // Process icons for Standee 3
-const ProcessStep = ({ label, icon: Icon, isDark, isFullscreen }: { label: string; icon: any; isDark: boolean; isFullscreen: boolean }) => (
+const ProcessStep = ({ label, icon: Icon, isFullscreen }: { label: string; icon: any; isFullscreen: boolean }) => (
   <div className="flex flex-col items-center">
     <div 
       className="rounded-full flex items-center justify-center"
       style={{ 
-        backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-        color: isDark ? '#ffffff' : '#1a1a1a',
-        width: isFullscreen ? 32 : 16,
-        height: isFullscreen ? 32 : 16,
+        backgroundColor: 'rgba(255,255,255,0.9)',
+        color: '#1a1a1a',
+        width: isFullscreen ? 36 : 18,
+        height: isFullscreen ? 36 : 18,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
       }}
     >
-      <Icon style={{ width: isFullscreen ? 14 : 7, height: isFullscreen ? 14 : 7 }} />
+      <Icon style={{ width: isFullscreen ? 16 : 8, height: isFullscreen ? 16 : 8 }} />
     </div>
     <p 
-      className="mt-1 font-medium text-center" 
+      className="mt-1 font-bold text-center" 
       style={{ 
-        color: isDark ? '#ffffff' : '#1a1a1a',
-        fontSize: isFullscreen ? 8 : 4
+        color: '#1a1a1a',
+        fontSize: isFullscreen ? 9 : 4.5,
+        textShadow: '0 1px 2px rgba(255,255,255,0.8)'
       }}
     >
       {label}
@@ -144,21 +165,22 @@ const ProcessStep = ({ label, icon: Icon, isDark, isFullscreen }: { label: strin
   </div>
 );
 
-// Trust Badge Component
-const TrustBadge = ({ text, isDark, accentColor, isFullscreen }: { text: string; isDark: boolean; accentColor: string; isFullscreen: boolean }) => (
+// Trust Badge Component - Bright style
+const TrustBadge = ({ text, accentColor, isFullscreen }: { text: string; accentColor: string; isFullscreen: boolean }) => (
   <div 
-    className="flex items-center gap-1 px-2 py-1 rounded-full"
+    className="flex items-center gap-1 px-2 py-1"
     style={{ 
-      backgroundColor: accentColor + '20',
-      border: `1px solid ${accentColor}40`,
+      backgroundColor: '#ffffff',
+      borderRadius: isFullscreen ? 6 : 3,
+      boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
     }}
   >
-    <Award style={{ width: isFullscreen ? 10 : 5, height: isFullscreen ? 10 : 5, color: accentColor }} />
+    <Award style={{ width: isFullscreen ? 12 : 6, height: isFullscreen ? 12 : 6, color: accentColor }} />
     <span 
-      className="font-semibold"
+      className="font-bold"
       style={{ 
-        color: isDark ? '#ffffff' : '#1a1a1a',
-        fontSize: isFullscreen ? 8 : 4
+        color: '#1a1a1a',
+        fontSize: isFullscreen ? 9 : 4.5
       }}
     >
       {text}
@@ -166,12 +188,48 @@ const TrustBadge = ({ text, isDark, accentColor, isFullscreen }: { text: string;
   </div>
 );
 
-// Main Standee Design Component - NO rounded corners for clean export
+// Stats Component
+const StatsSection = ({ isFullscreen, accentColor }: { isFullscreen: boolean; accentColor: string }) => (
+  <div 
+    className="flex justify-center gap-3"
+    style={{ marginTop: isFullscreen ? 12 : 6 }}
+  >
+    {[
+      { value: "500+", label: "Projects" },
+      { value: "10+", label: "Years" },
+      { value: "4.9★", label: "Rating" },
+    ].map((stat) => (
+      <div key={stat.label} className="text-center">
+        <p 
+          className="font-black"
+          style={{ 
+            fontSize: isFullscreen ? 16 : 8,
+            color: accentColor
+          }}
+        >
+          {stat.value}
+        </p>
+        <p 
+          className="font-medium"
+          style={{ 
+            fontSize: isFullscreen ? 7 : 3.5,
+            color: '#1a1a1a',
+            opacity: 0.8
+          }}
+        >
+          {stat.label}
+        </p>
+      </div>
+    ))}
+  </div>
+);
+
+// Main Standee Design Component
 const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig; isFullscreen?: boolean }) => {
   const { headline, subtext, bg, accentColor, type, trustBadges } = config;
-  const isDark = bg === "#1a1a1a" || bg === "#0a2540" || bg === "#18181b" || bg === "#0f172a" || bg === "#7c2d12" || bg === "#1e293b";
-  const textColor = isDark ? "#ffffff" : "#1a1a1a";
-  const subtleText = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)";
+  const isGradient = bg.includes('gradient');
+  const textColor = "#1a1a1a";
+  const subtleText = "rgba(0,0,0,0.7)";
   
   const baseHeight = isFullscreen ? "h-[900px]" : "h-[480px]";
   const baseWidth = isFullscreen ? "w-[375px]" : "w-[200px]";
@@ -179,19 +237,26 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
   const hasProcess = type === "process";
   const hasTrustBadges = trustBadges && trustBadges.length > 0;
 
+  // QR Code data - vCard for add to contacts
+  const vCardData = generateVCard();
+  const websiteUrl = `https://${contactInfo.website}`;
+
   return (
     <div
       className={`${baseWidth} ${baseHeight} flex flex-col relative`}
-      style={{ backgroundColor: bg }}
+      style={{ background: isGradient ? bg : bg }}
     >
-      {/* Top accent bar */}
+      {/* Top accent bar with gradient */}
       <div 
         className="flex-shrink-0" 
-        style={{ backgroundColor: accentColor, height: isFullscreen ? 8 : 4 }} 
+        style={{ 
+          background: 'linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3)',
+          height: isFullscreen ? 10 : 5 
+        }} 
       />
 
       {/* Hero Image */}
-      <div className="relative flex-shrink-0" style={{ height: isFullscreen ? '40%' : '38%' }}>
+      <div className="relative flex-shrink-0" style={{ height: isFullscreen ? '32%' : '30%' }}>
         <img
           src={heroImage}
           alt="Model Flat Interior"
@@ -201,35 +266,35 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(to bottom, transparent 40%, ${bg} 100%)`,
+            background: isGradient 
+              ? `linear-gradient(to bottom, transparent 30%, rgba(255,255,255,0.95) 100%)`
+              : `linear-gradient(to bottom, transparent 30%, ${bg}f5 100%)`,
           }}
         />
-        {/* Floating Trust Badge on Image */}
-        {hasTrustBadges && (
-          <div 
-            className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1"
-            style={{ 
-              backgroundColor: accentColor,
-              borderRadius: isFullscreen ? 4 : 2
-            }}
+        {/* Featured Badge */}
+        <div 
+          className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1"
+          style={{ 
+            background: 'linear-gradient(135deg, #ff6b6b, #feca57)',
+            borderRadius: isFullscreen ? 6 : 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+          }}
+        >
+          <Star style={{ width: isFullscreen ? 14 : 7, height: isFullscreen ? 14 : 7, color: '#ffffff', fill: '#ffffff' }} />
+          <span 
+            className="font-black text-white"
+            style={{ fontSize: isFullscreen ? 11 : 5.5 }}
           >
-            <Star style={{ width: isFullscreen ? 12 : 6, height: isFullscreen ? 12 : 6, color: '#ffffff', fill: '#ffffff' }} />
-            <span 
-              className="font-bold text-white"
-              style={{ fontSize: isFullscreen ? 10 : 5 }}
-            >
-              FEATURED
-            </span>
-          </div>
-        )}
+            FEATURED
+          </span>
+        </div>
       </div>
 
       {/* Main Content */}
       <div 
-        className="flex-1 flex flex-col justify-center text-center relative z-10"
+        className="flex-1 flex flex-col text-center relative z-10"
         style={{ 
-          padding: isFullscreen ? '0 24px' : '0 12px',
-          marginTop: isFullscreen ? -30 : -15 
+          padding: isFullscreen ? '12px 20px' : '6px 10px',
         }}
       >
         {/* Headline */}
@@ -237,8 +302,9 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
           className="font-black leading-tight tracking-tight whitespace-pre-line"
           style={{ 
             color: textColor,
-            fontSize: isFullscreen ? 28 : 14,
-            marginBottom: isFullscreen ? 12 : 6
+            fontSize: isFullscreen ? 26 : 13,
+            marginBottom: isFullscreen ? 8 : 4,
+            textShadow: '0 1px 2px rgba(255,255,255,0.5)'
           }}
         >
           {headline}
@@ -246,26 +312,28 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
 
         {/* Subtext */}
         <p
-          className="leading-relaxed max-w-[90%] mx-auto"
+          className="leading-relaxed max-w-[95%] mx-auto font-medium"
           style={{ 
             color: subtleText,
-            fontSize: isFullscreen ? 12 : 6
+            fontSize: isFullscreen ? 11 : 5.5
           }}
         >
           {subtext}
         </p>
 
+        {/* Stats Section */}
+        <StatsSection isFullscreen={isFullscreen} accentColor={accentColor} />
+
         {/* Trust Badges */}
         {hasTrustBadges && (
           <div 
             className="flex flex-wrap justify-center gap-1 mx-auto"
-            style={{ marginTop: isFullscreen ? 16 : 8 }}
+            style={{ marginTop: isFullscreen ? 10 : 5 }}
           >
             {trustBadges.map((badge) => (
               <TrustBadge 
                 key={badge} 
                 text={badge} 
-                isDark={isDark} 
                 accentColor={accentColor}
                 isFullscreen={isFullscreen}
               />
@@ -273,48 +341,57 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
           </div>
         )}
 
-        {/* Process Steps for Standee 3 */}
+        {/* Process Steps */}
         {hasProcess && (
           <div 
             className="flex justify-center gap-2 mx-auto"
-            style={{ marginTop: isFullscreen ? 20 : 10 }}
+            style={{ marginTop: isFullscreen ? 14 : 7 }}
           >
             {processSteps.map((step) => (
               <ProcessStep 
                 key={step.label} 
                 label={step.label} 
                 icon={step.icon}
-                isDark={isDark} 
                 isFullscreen={isFullscreen}
               />
             ))}
           </div>
         )}
 
-        {/* Our Process Section - for new designs */}
+        {/* Our Process Section */}
         {!hasProcess && (
           <div 
             className="mx-auto w-full"
-            style={{ marginTop: isFullscreen ? 16 : 8 }}
+            style={{ marginTop: isFullscreen ? 10 : 5 }}
           >
             <p 
-              className="font-semibold mb-2"
-              style={{ color: accentColor, fontSize: isFullscreen ? 10 : 5 }}
+              className="font-black mb-1"
+              style={{ 
+                color: accentColor, 
+                fontSize: isFullscreen ? 11 : 5.5,
+                textShadow: '0 1px 2px rgba(255,255,255,0.5)'
+              }}
             >
               OUR PROCESS
             </p>
-            <div className="flex justify-center gap-1">
+            <div className="flex justify-center gap-1 flex-wrap">
               {["Consult", "Design", "Execute", "Deliver"].map((step, i) => (
                 <div key={step} className="flex items-center">
                   <span 
-                    className="font-medium"
-                    style={{ color: textColor, fontSize: isFullscreen ? 8 : 4 }}
+                    className="font-bold px-2 py-0.5"
+                    style={{ 
+                      backgroundColor: 'rgba(255,255,255,0.9)',
+                      borderRadius: isFullscreen ? 4 : 2,
+                      color: textColor, 
+                      fontSize: isFullscreen ? 9 : 4.5,
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.1)'
+                    }}
                   >
                     {step}
                   </span>
                   {i < 3 && (
                     <span 
-                      style={{ color: accentColor, margin: '0 2px', fontSize: isFullscreen ? 8 : 4 }}
+                      style={{ color: accentColor, margin: '0 2px', fontSize: isFullscreen ? 10 : 5, fontWeight: 'bold' }}
                     >
                       →
                     </span>
@@ -326,41 +403,133 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
         )}
       </div>
 
-      {/* CTA Button */}
-      <div style={{ padding: isFullscreen ? '0 24px 12px' : '0 12px 6px' }}>
-        <div
-          className="text-center flex items-center justify-center gap-2"
-          style={{ 
-            backgroundColor: accentColor,
-            padding: isFullscreen ? '10px 14px' : '5px 7px',
-            borderRadius: isFullscreen ? 6 : 3
-          }}
-        >
-          <Phone className="text-white" style={{ width: isFullscreen ? 14 : 7, height: isFullscreen ? 14 : 7 }} />
-          <p 
-            className="font-semibold text-white tracking-wide"
-            style={{ fontSize: isFullscreen ? 12 : 6 }}
-          >
-            Talk to Our Designer
-          </p>
+      {/* QR Code & Contact Section */}
+      <div 
+        className="flex-shrink-0"
+        style={{ 
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          padding: isFullscreen ? '12px 16px' : '6px 8px',
+          margin: isFullscreen ? '0 12px 8px' : '0 6px 4px',
+          borderRadius: isFullscreen ? 8 : 4,
+          boxShadow: '0 2px 12px rgba(0,0,0,0.1)'
+        }}
+      >
+        <div className="flex items-center justify-between gap-2">
+          {/* QR Code */}
+          <div className="flex flex-col items-center">
+            <div 
+              style={{ 
+                padding: isFullscreen ? 4 : 2,
+                backgroundColor: '#ffffff',
+                borderRadius: isFullscreen ? 4 : 2,
+                border: `2px solid ${accentColor}`
+              }}
+            >
+              <QRCodeSVG 
+                value={websiteUrl}
+                size={isFullscreen ? 60 : 30}
+                level="M"
+                fgColor="#1a1a1a"
+                bgColor="#ffffff"
+              />
+            </div>
+            <p 
+              className="font-bold text-center"
+              style={{ 
+                fontSize: isFullscreen ? 7 : 3.5,
+                color: accentColor,
+                marginTop: isFullscreen ? 4 : 2
+              }}
+            >
+              SCAN ME
+            </p>
+          </div>
+
+          {/* Contact Details */}
+          <div className="flex-1">
+            {/* Phone - Prominent */}
+            <div 
+              className="flex items-center gap-2 mb-1"
+              style={{ 
+                backgroundColor: accentColor,
+                padding: isFullscreen ? '6px 10px' : '3px 5px',
+                borderRadius: isFullscreen ? 6 : 3
+              }}
+            >
+              <Phone style={{ width: isFullscreen ? 16 : 8, height: isFullscreen ? 16 : 8, color: '#ffffff' }} />
+              <span 
+                className="font-black text-white"
+                style={{ fontSize: isFullscreen ? 14 : 7 }}
+              >
+                {contactInfo.phone}
+              </span>
+            </div>
+
+            {/* Website */}
+            <div className="flex items-center gap-1">
+              <Globe style={{ width: isFullscreen ? 12 : 6, height: isFullscreen ? 12 : 6, color: accentColor }} />
+              <span 
+                className="font-bold"
+                style={{ fontSize: isFullscreen ? 11 : 5.5, color: textColor }}
+              >
+                {contactInfo.website}
+              </span>
+            </div>
+
+            {/* Address */}
+            <div className="flex items-center gap-1">
+              <MapPin style={{ width: isFullscreen ? 12 : 6, height: isFullscreen ? 12 : 6, color: accentColor }} />
+              <span 
+                className="font-medium"
+                style={{ fontSize: isFullscreen ? 9 : 4.5, color: subtleText }}
+              >
+                {contactInfo.address}
+              </span>
+            </div>
+
+            {/* WhatsApp & Add Contact */}
+            <div className="flex items-center gap-2 mt-1">
+              <div className="flex items-center gap-1">
+                <MessageCircle style={{ width: isFullscreen ? 10 : 5, height: isFullscreen ? 10 : 5, color: '#25D366' }} />
+                <span 
+                  className="font-medium"
+                  style={{ fontSize: isFullscreen ? 8 : 4, color: '#25D366' }}
+                >
+                  WhatsApp
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <UserPlus style={{ width: isFullscreen ? 10 : 5, height: isFullscreen ? 10 : 5, color: accentColor }} />
+                <span 
+                  className="font-medium"
+                  style={{ fontSize: isFullscreen ? 8 : 4, color: accentColor }}
+                >
+                  Save Contact
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Contact Info */}
-      <div 
-        className="flex justify-center gap-3 items-center"
-        style={{ 
-          padding: isFullscreen ? '6px 24px' : '3px 12px',
-          backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'
-        }}
-      >
-        <div className="flex items-center gap-1">
-          <Globe style={{ width: isFullscreen ? 10 : 5, height: isFullscreen ? 10 : 5, color: subtleText }} />
-          <span style={{ fontSize: isFullscreen ? 9 : 4.5, color: subtleText, fontWeight: 600 }}>brightleaf.co.in</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <MessageCircle style={{ width: isFullscreen ? 10 : 5, height: isFullscreen ? 10 : 5, color: '#25D366' }} />
-          <span style={{ fontSize: isFullscreen ? 9 : 4.5, color: subtleText }}>+91 9876543210</span>
+      {/* CTA Button */}
+      <div style={{ padding: isFullscreen ? '0 12px 8px' : '0 6px 4px' }}>
+        <div
+          className="text-center flex items-center justify-center gap-2"
+          style={{ 
+            background: `linear-gradient(135deg, ${accentColor}, ${accentColor}dd)`,
+            padding: isFullscreen ? '10px 14px' : '5px 7px',
+            borderRadius: isFullscreen ? 8 : 4,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+          }}
+        >
+          <Phone className="text-white" style={{ width: isFullscreen ? 16 : 8, height: isFullscreen ? 16 : 8 }} />
+          <p 
+            className="font-black text-white tracking-wide"
+            style={{ fontSize: isFullscreen ? 13 : 6.5 }}
+          >
+            BOOK FREE CONSULTATION
+          </p>
         </div>
       </div>
 
@@ -369,7 +538,7 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
         className="text-center"
         style={{ 
           padding: isFullscreen ? '6px' : '3px',
-          backgroundColor: accentColor + '15'
+          backgroundColor: 'rgba(255,255,255,0.9)'
         }}
       >
         <p style={{ fontSize: isFullscreen ? 8 : 4, color: textColor }}>
@@ -384,8 +553,8 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
       <div
         className="flex-shrink-0"
         style={{ 
-          backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)",
-          padding: isFullscreen ? '10px 24px' : '5px 12px'
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          padding: isFullscreen ? '8px 16px' : '4px 8px'
         }}
       >
         <div className="flex items-center justify-between">
@@ -394,31 +563,28 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
               src={logo}
               alt="Brightleaf"
               className="object-contain"
-              style={{ 
-                height: isFullscreen ? 28 : 14,
-                filter: isDark ? "brightness(0) invert(1)" : "none" 
-              }}
+              style={{ height: isFullscreen ? 28 : 14 }}
               crossOrigin="anonymous"
             />
             <div>
               <p
-                className="font-semibold leading-none"
-                style={{ color: textColor, fontSize: isFullscreen ? 9 : 4.5 }}
+                className="font-bold leading-none"
+                style={{ color: textColor, fontSize: isFullscreen ? 10 : 5 }}
               >
                 Brightleaf Design Studio
               </p>
-              <p style={{ color: subtleText, fontSize: isFullscreen ? 7 : 3.5 }}>
+              <p className="font-medium" style={{ color: subtleText, fontSize: isFullscreen ? 7 : 3.5 }}>
                 Interior Design Experts
               </p>
             </div>
           </div>
           <div className="text-right">
-            <p style={{ color: subtleText, fontSize: isFullscreen ? 7 : 3.5 }}>
+            <p className="font-medium" style={{ color: subtleText, fontSize: isFullscreen ? 7 : 3.5 }}>
               Builder Partner
             </p>
             <p
-              className="font-semibold"
-              style={{ color: textColor, fontSize: isFullscreen ? 9 : 4.5 }}
+              className="font-bold"
+              style={{ color: textColor, fontSize: isFullscreen ? 10 : 5 }}
             >
               Prosperiti Homes
             </p>
@@ -426,10 +592,13 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
         </div>
       </div>
 
-      {/* Bottom accent bar */}
+      {/* Bottom accent bar with gradient */}
       <div 
         className="flex-shrink-0" 
-        style={{ backgroundColor: accentColor, height: isFullscreen ? 6 : 3 }} 
+        style={{ 
+          background: 'linear-gradient(90deg, #ff9ff3, #48dbfb, #feca57, #ff6b6b)',
+          height: isFullscreen ? 8 : 4 
+        }} 
       />
     </div>
   );
@@ -526,7 +695,7 @@ const StandeeCard = ({
           <h3 className="text-lg font-bold text-foreground">Design {config.id}</h3>
         </div>
 
-        {/* Standee Preview - Sharp edges for clean export */}
+        {/* Standee Preview */}
         <div
           ref={standeeRef}
           className="shadow-2xl border-2 border-border overflow-hidden"
@@ -603,46 +772,33 @@ const StandeeCard = ({
 const StandeeDesigns = () => {
   const [standees, setStandees] = useState<StandeeConfig[]>(standeeConfigs);
 
-  const regenerateStandee = (id: number) => {
-    const colors = [
-      { bg: "#1a1a1a", accentColor: "#d4af37" },
-      { bg: "#ffffff", accentColor: "#2d5a3d" },
-      { bg: "#0a2540", accentColor: "#00c2ff" },
-      { bg: "#f5f0e8", accentColor: "#8b4513" },
-      { bg: "#1e1e1e", accentColor: "#e8c547" },
-      { bg: "#2c2c2c", accentColor: "#ff6b35" },
-      { bg: "#fafafa", accentColor: "#6b21a8" },
-      { bg: "#0f172a", accentColor: "#38bdf8" },
-      { bg: "#fffbeb", accentColor: "#b45309" },
-      { bg: "#18181b", accentColor: "#22c55e" },
-      { bg: "#7c2d12", accentColor: "#fbbf24" },
-      { bg: "#1e293b", accentColor: "#10b981" },
-    ];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  const brightGradients = [
+    { bg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", accentColor: "#ffd700" },
+    { bg: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)", accentColor: "#ffffff" },
+    { bg: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)", accentColor: "#1a1a1a" },
+    { bg: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)", accentColor: "#1a1a1a" },
+    { bg: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)", accentColor: "#2d5a3d" },
+    { bg: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)", accentColor: "#d63384" },
+    { bg: "linear-gradient(135deg, #f6d365 0%, #fda085 100%)", accentColor: "#c41e3a" },
+    { bg: "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)", accentColor: "#0d6efd" },
+    { bg: "linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)", accentColor: "#6f42c1" },
+    { bg: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)", accentColor: "#dc3545" },
+    { bg: "linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%)", accentColor: "#ffffff" },
+    { bg: "linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%)", accentColor: "#1a1a1a" },
+  ];
 
+  const regenerateStandee = (id: number) => {
+    const randomGradient = brightGradients[Math.floor(Math.random() * brightGradients.length)];
     setStandees((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, ...randomColor } : s))
+      prev.map((s) => (s.id === id ? { ...s, ...randomGradient } : s))
     );
   };
 
   const regenerateAll = () => {
-    const colors = [
-      { bg: "#1a1a1a", accentColor: "#d4af37" },
-      { bg: "#ffffff", accentColor: "#2d5a3d" },
-      { bg: "#0a2540", accentColor: "#00c2ff" },
-      { bg: "#f5f0e8", accentColor: "#8b4513" },
-      { bg: "#1e1e1e", accentColor: "#e8c547" },
-      { bg: "#2c2c2c", accentColor: "#ff6b35" },
-      { bg: "#fafafa", accentColor: "#6b21a8" },
-      { bg: "#0f172a", accentColor: "#38bdf8" },
-      { bg: "#fffbeb", accentColor: "#b45309" },
-      { bg: "#18181b", accentColor: "#22c55e" },
-    ];
-
     setStandees((prev) =>
       prev.map((s) => ({
         ...s,
-        ...colors[Math.floor(Math.random() * colors.length)],
+        ...brightGradients[Math.floor(Math.random() * brightGradients.length)],
       }))
     );
   };
@@ -663,7 +819,7 @@ const StandeeDesigns = () => {
             Model Flat Standee Designs
           </h1>
           <p className="text-primary-foreground/80 mt-2 text-lg max-w-2xl">
-            Premium, bold designs with trust badges to stop visitors and inspire them to transform their flats.
+            Bright, colorful designs with QR codes, trust badges, and prominent contact info.
           </p>
         </div>
       </div>
@@ -686,26 +842,30 @@ const StandeeDesigns = () => {
             </Button>
           </div>
 
-          <div className="mt-5 grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
+          <div className="mt-5 grid grid-cols-2 md:grid-cols-6 gap-3 text-sm">
             <div className="bg-background rounded-lg p-3 border border-border">
               <p className="font-semibold text-foreground">Size</p>
               <p className="text-muted-foreground text-xs">2.5 ft × 6 ft</p>
             </div>
             <div className="bg-background rounded-lg p-3 border border-border">
-              <p className="font-semibold text-foreground">Format</p>
-              <p className="text-muted-foreground text-xs">PDF & PNG</p>
-            </div>
-            <div className="bg-background rounded-lg p-3 border border-border">
-              <p className="font-semibold text-foreground">Resolution</p>
-              <p className="text-muted-foreground text-xs">300 DPI (6x scale)</p>
-            </div>
-            <div className="bg-background rounded-lg p-3 border border-border">
-              <p className="font-semibold text-foreground">Color Mode</p>
-              <p className="text-muted-foreground text-xs">CMYK Ready</p>
+              <p className="font-semibold text-foreground">Phone</p>
+              <p className="text-muted-foreground text-xs">{contactInfo.phone}</p>
             </div>
             <div className="bg-background rounded-lg p-3 border border-border">
               <p className="font-semibold text-foreground">Website</p>
-              <p className="text-muted-foreground text-xs">brightleaf.co.in</p>
+              <p className="text-muted-foreground text-xs">{contactInfo.website}</p>
+            </div>
+            <div className="bg-background rounded-lg p-3 border border-border">
+              <p className="font-semibold text-foreground">QR Code</p>
+              <p className="text-muted-foreground text-xs">Scan to Visit</p>
+            </div>
+            <div className="bg-background rounded-lg p-3 border border-border">
+              <p className="font-semibold text-foreground">Trust Stats</p>
+              <p className="text-muted-foreground text-xs">500+ | 10+ Years</p>
+            </div>
+            <div className="bg-background rounded-lg p-3 border border-border">
+              <p className="font-semibold text-foreground">Resolution</p>
+              <p className="text-muted-foreground text-xs">300 DPI (6x)</p>
             </div>
           </div>
         </div>
