@@ -1,4 +1,4 @@
-import { ArrowRight, Phone } from "lucide-react";
+import { ArrowRight, Phone, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-living-room.jpg";
 const Hero = () => {
@@ -52,25 +52,21 @@ const Hero = () => {
             </Button>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 md:gap-16 mt-20 pt-10 border-t border-[hsl(0,0%,100%)]/20 animate-fade-up" style={{
+          {/* Trust Badges */}
+          <div className="flex flex-wrap items-center gap-4 md:gap-6 mt-10 animate-fade-up" style={{
           animationDelay: "0.5s"
         }}>
-            {[{
-            number: "950+",
-            label: "Projects Done"
-          }, {
-            number: "100%",
-            label: "Satisfaction"
-          }, {
-            number: "10+",
-            label: "Years Experience"
-          }].map(stat => <div key={stat.label} className="text-center sm:text-left">
-                <div className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-primary">
-                  {stat.number}
-                </div>
-                <div className="text-sm md:text-base text-[hsl(0,0%,100%)]/70 mt-2 font-medium">{stat.label}</div>
-              </div>)}
+            {[
+              "End-to-End Interior Solutions",
+              "On-Time Delivery",
+              "Transparent Pricing",
+              "10+ Years Experience"
+            ].map((badge) => (
+              <div key={badge} className="flex items-center gap-2 text-[hsl(0,0%,100%)]/90">
+                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
+                <span className="text-sm md:text-base font-medium">{badge}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
