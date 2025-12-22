@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Download, ArrowLeft, Shuffle, Eye, X, Phone, Globe, MessageCircle } from "lucide-react";
+import { Download, ArrowLeft, Shuffle, Eye, X, Phone, Globe, MessageCircle, Award, CheckCircle, Users, Star, Shield, Clock, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import logo from "@/assets/brightleaf-logo.png";
 import heroImage from "@/assets/hero-living-room.jpg";
 
-// 5 specific standee designs as requested
+// 10 standee designs - 5 original + 5 new attention-grabbing with trust badges
 const standeeConfigs = [
   {
     id: 1,
@@ -50,6 +50,52 @@ const standeeConfigs = [
     bg: "#18181b",
     accentColor: "#22c55e",
   },
+  // NEW 5 attention-grabbing designs with trust badges
+  {
+    id: 6,
+    type: "trust",
+    headline: "500+ Happy Homes Designed",
+    subtext: "Join our growing family of satisfied homeowners.",
+    bg: "#0f172a",
+    accentColor: "#f59e0b",
+    trustBadges: ["500+ Projects", "10+ Years", "4.9★ Rating"],
+  },
+  {
+    id: 7,
+    type: "urgency",
+    headline: "Limited Time Offer!\nFree 3D Design",
+    subtext: "Book your consultation today and get a complimentary 3D visualization.",
+    bg: "#7c2d12",
+    accentColor: "#fbbf24",
+    trustBadges: ["Free Consultation", "No Hidden Costs"],
+  },
+  {
+    id: 8,
+    type: "guarantee",
+    headline: "100% Satisfaction Guaranteed",
+    subtext: "We don't stop until you love your space.",
+    bg: "#1e293b",
+    accentColor: "#10b981",
+    trustBadges: ["Money Back Guarantee", "On-Time Delivery", "Premium Materials"],
+  },
+  {
+    id: 9,
+    type: "social",
+    headline: "See What Others Are Saying",
+    subtext: "\"Best decision we made for our home!\" - Happy Customer",
+    bg: "#fef3c7",
+    accentColor: "#dc2626",
+    trustBadges: ["4.9/5 Google Rating", "100+ Reviews"],
+  },
+  {
+    id: 10,
+    type: "exclusive",
+    headline: "Exclusive Model Flat Offer",
+    subtext: "Special pricing for Prosperiti Homes residents only.",
+    bg: "#1a1a1a",
+    accentColor: "#a855f7",
+    trustBadges: ["Exclusive Deal", "Limited Slots", "VIP Service"],
+  },
 ];
 
 interface StandeeConfig {
@@ -59,36 +105,79 @@ interface StandeeConfig {
   subtext: string;
   bg: string;
   accentColor: string;
+  trustBadges?: string[];
 }
 
+// Process steps with icons
+const processSteps = [
+  { label: "Meet", icon: Users },
+  { label: "Design", icon: Sparkles },
+  { label: "Approve", icon: CheckCircle },
+  { label: "Build", icon: Shield },
+  { label: "Install", icon: Clock },
+  { label: "Enjoy", icon: Star },
+];
+
 // Process icons for Standee 3
-const ProcessStep = ({ label, isDark }: { label: string; isDark: boolean }) => (
+const ProcessStep = ({ label, icon: Icon, isDark, isFullscreen }: { label: string; icon: any; isDark: boolean; isFullscreen: boolean }) => (
   <div className="flex flex-col items-center">
     <div 
-      className="w-8 h-8 rounded-full flex items-center justify-center text-[8px] font-bold"
+      className="rounded-full flex items-center justify-center"
       style={{ 
         backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-        color: isDark ? '#ffffff' : '#1a1a1a'
+        color: isDark ? '#ffffff' : '#1a1a1a',
+        width: isFullscreen ? 32 : 16,
+        height: isFullscreen ? 32 : 16,
       }}
     >
-      {label.charAt(0)}
+      <Icon style={{ width: isFullscreen ? 14 : 7, height: isFullscreen ? 14 : 7 }} />
     </div>
-    <p className="text-[6px] mt-1 font-medium" style={{ color: isDark ? '#ffffff' : '#1a1a1a' }}>
+    <p 
+      className="mt-1 font-medium text-center" 
+      style={{ 
+        color: isDark ? '#ffffff' : '#1a1a1a',
+        fontSize: isFullscreen ? 8 : 4
+      }}
+    >
       {label}
     </p>
   </div>
 );
 
+// Trust Badge Component
+const TrustBadge = ({ text, isDark, accentColor, isFullscreen }: { text: string; isDark: boolean; accentColor: string; isFullscreen: boolean }) => (
+  <div 
+    className="flex items-center gap-1 px-2 py-1 rounded-full"
+    style={{ 
+      backgroundColor: accentColor + '20',
+      border: `1px solid ${accentColor}40`,
+    }}
+  >
+    <Award style={{ width: isFullscreen ? 10 : 5, height: isFullscreen ? 10 : 5, color: accentColor }} />
+    <span 
+      className="font-semibold"
+      style={{ 
+        color: isDark ? '#ffffff' : '#1a1a1a',
+        fontSize: isFullscreen ? 8 : 4
+      }}
+    >
+      {text}
+    </span>
+  </div>
+);
+
 // Main Standee Design Component - NO rounded corners for clean export
 const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig; isFullscreen?: boolean }) => {
-  const { headline, subtext, bg, accentColor, type } = config;
-  const isDark = bg === "#1a1a1a" || bg === "#0a2540" || bg === "#18181b";
+  const { headline, subtext, bg, accentColor, type, trustBadges } = config;
+  const isDark = bg === "#1a1a1a" || bg === "#0a2540" || bg === "#18181b" || bg === "#0f172a" || bg === "#7c2d12" || bg === "#1e293b";
   const textColor = isDark ? "#ffffff" : "#1a1a1a";
   const subtleText = isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)";
   
-  const scale = isFullscreen ? 2 : 1;
   const baseHeight = isFullscreen ? "h-[900px]" : "h-[480px]";
   const baseWidth = isFullscreen ? "w-[375px]" : "w-[200px]";
+
+  const hasProcess = type === "process";
+  const hasTrustBadges = trustBadges && trustBadges.length > 0;
 
   return (
     <div
@@ -102,7 +191,7 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
       />
 
       {/* Hero Image */}
-      <div className="relative flex-shrink-0" style={{ height: isFullscreen ? '45%' : '42%' }}>
+      <div className="relative flex-shrink-0" style={{ height: isFullscreen ? '40%' : '38%' }}>
         <img
           src={heroImage}
           alt="Model Flat Interior"
@@ -112,9 +201,27 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
         <div
           className="absolute inset-0"
           style={{
-            background: `linear-gradient(to bottom, transparent 50%, ${bg} 100%)`,
+            background: `linear-gradient(to bottom, transparent 40%, ${bg} 100%)`,
           }}
         />
+        {/* Floating Trust Badge on Image */}
+        {hasTrustBadges && (
+          <div 
+            className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1"
+            style={{ 
+              backgroundColor: accentColor,
+              borderRadius: isFullscreen ? 4 : 2
+            }}
+          >
+            <Star style={{ width: isFullscreen ? 12 : 6, height: isFullscreen ? 12 : 6, color: '#ffffff', fill: '#ffffff' }} />
+            <span 
+              className="font-bold text-white"
+              style={{ fontSize: isFullscreen ? 10 : 5 }}
+            >
+              FEATURED
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Main Content */}
@@ -122,16 +229,16 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
         className="flex-1 flex flex-col justify-center text-center relative z-10"
         style={{ 
           padding: isFullscreen ? '0 24px' : '0 12px',
-          marginTop: isFullscreen ? -40 : -20 
+          marginTop: isFullscreen ? -30 : -15 
         }}
       >
         {/* Headline */}
         <h1
-          className="font-black leading-tight tracking-tight"
+          className="font-black leading-tight tracking-tight whitespace-pre-line"
           style={{ 
             color: textColor,
-            fontSize: isFullscreen ? 32 : 16,
-            marginBottom: isFullscreen ? 16 : 8
+            fontSize: isFullscreen ? 28 : 14,
+            marginBottom: isFullscreen ? 12 : 6
           }}
         >
           {headline}
@@ -142,39 +249,97 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
           className="leading-relaxed max-w-[90%] mx-auto"
           style={{ 
             color: subtleText,
-            fontSize: isFullscreen ? 14 : 7
+            fontSize: isFullscreen ? 12 : 6
           }}
         >
           {subtext}
         </p>
 
+        {/* Trust Badges */}
+        {hasTrustBadges && (
+          <div 
+            className="flex flex-wrap justify-center gap-1 mx-auto"
+            style={{ marginTop: isFullscreen ? 16 : 8 }}
+          >
+            {trustBadges.map((badge) => (
+              <TrustBadge 
+                key={badge} 
+                text={badge} 
+                isDark={isDark} 
+                accentColor={accentColor}
+                isFullscreen={isFullscreen}
+              />
+            ))}
+          </div>
+        )}
+
         {/* Process Steps for Standee 3 */}
-        {type === "process" && (
+        {hasProcess && (
           <div 
             className="flex justify-center gap-2 mx-auto"
-            style={{ marginTop: isFullscreen ? 24 : 12 }}
+            style={{ marginTop: isFullscreen ? 20 : 10 }}
           >
-            {["Meet", "Design", "Approve", "Build", "Install", "Enjoy"].map((step) => (
-              <ProcessStep key={step} label={step} isDark={isDark} />
+            {processSteps.map((step) => (
+              <ProcessStep 
+                key={step.label} 
+                label={step.label} 
+                icon={step.icon}
+                isDark={isDark} 
+                isFullscreen={isFullscreen}
+              />
             ))}
+          </div>
+        )}
+
+        {/* Our Process Section - for new designs */}
+        {!hasProcess && (
+          <div 
+            className="mx-auto w-full"
+            style={{ marginTop: isFullscreen ? 16 : 8 }}
+          >
+            <p 
+              className="font-semibold mb-2"
+              style={{ color: accentColor, fontSize: isFullscreen ? 10 : 5 }}
+            >
+              OUR PROCESS
+            </p>
+            <div className="flex justify-center gap-1">
+              {["Consult", "Design", "Execute", "Deliver"].map((step, i) => (
+                <div key={step} className="flex items-center">
+                  <span 
+                    className="font-medium"
+                    style={{ color: textColor, fontSize: isFullscreen ? 8 : 4 }}
+                  >
+                    {step}
+                  </span>
+                  {i < 3 && (
+                    <span 
+                      style={{ color: accentColor, margin: '0 2px', fontSize: isFullscreen ? 8 : 4 }}
+                    >
+                      →
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
 
       {/* CTA Button */}
-      <div style={{ padding: isFullscreen ? '0 24px 16px' : '0 12px 8px' }}>
+      <div style={{ padding: isFullscreen ? '0 24px 12px' : '0 12px 6px' }}>
         <div
           className="text-center flex items-center justify-center gap-2"
           style={{ 
             backgroundColor: accentColor,
-            padding: isFullscreen ? '12px 16px' : '6px 8px',
+            padding: isFullscreen ? '10px 14px' : '5px 7px',
             borderRadius: isFullscreen ? 6 : 3
           }}
         >
-          <Phone className="text-white" style={{ width: isFullscreen ? 16 : 8, height: isFullscreen ? 16 : 8 }} />
+          <Phone className="text-white" style={{ width: isFullscreen ? 14 : 7, height: isFullscreen ? 14 : 7 }} />
           <p 
             className="font-semibold text-white tracking-wide"
-            style={{ fontSize: isFullscreen ? 14 : 7 }}
+            style={{ fontSize: isFullscreen ? 12 : 6 }}
           >
             Talk to Our Designer
           </p>
@@ -183,20 +348,36 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
 
       {/* Contact Info */}
       <div 
-        className="flex justify-center gap-4 items-center"
+        className="flex justify-center gap-3 items-center"
         style={{ 
-          padding: isFullscreen ? '8px 24px' : '4px 12px',
+          padding: isFullscreen ? '6px 24px' : '3px 12px',
           backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)'
         }}
       >
         <div className="flex items-center gap-1">
-          <Globe style={{ width: isFullscreen ? 12 : 6, height: isFullscreen ? 12 : 6, color: subtleText }} />
-          <span style={{ fontSize: isFullscreen ? 10 : 5, color: subtleText }}>brightleaf.in</span>
+          <Globe style={{ width: isFullscreen ? 10 : 5, height: isFullscreen ? 10 : 5, color: subtleText }} />
+          <span style={{ fontSize: isFullscreen ? 9 : 4.5, color: subtleText, fontWeight: 600 }}>brightleaf.co.in</span>
         </div>
         <div className="flex items-center gap-1">
-          <MessageCircle style={{ width: isFullscreen ? 12 : 6, height: isFullscreen ? 12 : 6, color: '#25D366' }} />
-          <span style={{ fontSize: isFullscreen ? 10 : 5, color: subtleText }}>+91 9876543210</span>
+          <MessageCircle style={{ width: isFullscreen ? 10 : 5, height: isFullscreen ? 10 : 5, color: '#25D366' }} />
+          <span style={{ fontSize: isFullscreen ? 9 : 4.5, color: subtleText }}>+91 9876543210</span>
         </div>
+      </div>
+
+      {/* Model Flat Credit */}
+      <div 
+        className="text-center"
+        style={{ 
+          padding: isFullscreen ? '6px' : '3px',
+          backgroundColor: accentColor + '15'
+        }}
+      >
+        <p style={{ fontSize: isFullscreen ? 8 : 4, color: textColor }}>
+          <span style={{ opacity: 0.7 }}>Model Flat Designed by</span>{' '}
+          <span className="font-bold">Brightleaf Design Studio</span>{' '}
+          <span style={{ opacity: 0.7 }}>for</span>{' '}
+          <span className="font-bold">Prosperiti Homes</span>
+        </p>
       </div>
 
       {/* Branding Footer */}
@@ -204,7 +385,7 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
         className="flex-shrink-0"
         style={{ 
           backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)",
-          padding: isFullscreen ? '12px 24px' : '6px 12px'
+          padding: isFullscreen ? '10px 24px' : '5px 12px'
         }}
       >
         <div className="flex items-center justify-between">
@@ -214,7 +395,7 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
               alt="Brightleaf"
               className="object-contain"
               style={{ 
-                height: isFullscreen ? 32 : 16,
+                height: isFullscreen ? 28 : 14,
                 filter: isDark ? "brightness(0) invert(1)" : "none" 
               }}
               crossOrigin="anonymous"
@@ -222,22 +403,22 @@ const StandeeDesign = ({ config, isFullscreen = false }: { config: StandeeConfig
             <div>
               <p
                 className="font-semibold leading-none"
-                style={{ color: textColor, fontSize: isFullscreen ? 10 : 5 }}
+                style={{ color: textColor, fontSize: isFullscreen ? 9 : 4.5 }}
               >
                 Brightleaf Design Studio
               </p>
-              <p style={{ color: subtleText, fontSize: isFullscreen ? 8 : 4 }}>
-                Interior Design
+              <p style={{ color: subtleText, fontSize: isFullscreen ? 7 : 3.5 }}>
+                Interior Design Experts
               </p>
             </div>
           </div>
           <div className="text-right">
-            <p style={{ color: subtleText, fontSize: isFullscreen ? 8 : 4 }}>
-              Model Flat By
+            <p style={{ color: subtleText, fontSize: isFullscreen ? 7 : 3.5 }}>
+              Builder Partner
             </p>
             <p
               className="font-semibold"
-              style={{ color: textColor, fontSize: isFullscreen ? 10 : 5 }}
+              style={{ color: textColor, fontSize: isFullscreen ? 9 : 4.5 }}
             >
               Prosperiti Homes
             </p>
@@ -271,6 +452,11 @@ const StandeeCard = ({
     process: "One-Stop Solution",
     fun: "Fun & Catchy",
     minimal: "Minimal & Corporate",
+    trust: "Trust Badges",
+    urgency: "Urgency & Offer",
+    guarantee: "Guarantee Focus",
+    social: "Social Proof",
+    exclusive: "Exclusive Deal",
   };
 
   const handleDownloadPNG = async () => {
@@ -311,7 +497,6 @@ const StandeeCard = ({
       });
 
       // 2.5ft x 6ft in inches = 30 x 72 inches
-      // At 300 DPI that's 9000 x 21600 pixels
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'in',
@@ -430,6 +615,8 @@ const StandeeDesigns = () => {
       { bg: "#0f172a", accentColor: "#38bdf8" },
       { bg: "#fffbeb", accentColor: "#b45309" },
       { bg: "#18181b", accentColor: "#22c55e" },
+      { bg: "#7c2d12", accentColor: "#fbbf24" },
+      { bg: "#1e293b", accentColor: "#10b981" },
     ];
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
@@ -476,7 +663,7 @@ const StandeeDesigns = () => {
             Model Flat Standee Designs
           </h1>
           <p className="text-primary-foreground/80 mt-2 text-lg max-w-2xl">
-            Premium, bold designs to stop visitors at the entrance and inspire them to transform their flats.
+            Premium, bold designs with trust badges to stop visitors and inspire them to transform their flats.
           </p>
         </div>
       </div>
@@ -487,7 +674,7 @@ const StandeeDesigns = () => {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <h2 className="text-lg font-semibold text-foreground">
-                5 Unique Print-Ready Designs
+                10 Unique Print-Ready Designs
               </h2>
               <p className="text-sm text-muted-foreground">
                 Roll-up standee: 2.5 × 6 feet | CMYK-friendly | 300 DPI ready
@@ -517,8 +704,8 @@ const StandeeDesigns = () => {
               <p className="text-muted-foreground text-xs">CMYK Ready</p>
             </div>
             <div className="bg-background rounded-lg p-3 border border-border">
-              <p className="font-semibold text-foreground">Style</p>
-              <p className="text-muted-foreground text-xs">Minimal & Bold</p>
+              <p className="font-semibold text-foreground">Website</p>
+              <p className="text-muted-foreground text-xs">brightleaf.co.in</p>
             </div>
           </div>
         </div>
@@ -545,7 +732,7 @@ const StandeeDesigns = () => {
           <h2 className="text-2xl font-bold text-foreground mb-6 text-center">
             Design Variations Explained
           </h2>
-          <div className="grid md:grid-cols-5 gap-4">
+          <div className="grid md:grid-cols-5 gap-4 mb-6">
             <div className="bg-background p-4 rounded-lg border border-border">
               <h3 className="font-semibold text-foreground mb-2 text-sm">1. Premium Luxury</h3>
               <p className="text-xs text-muted-foreground">
@@ -574,6 +761,38 @@ const StandeeDesigns = () => {
               <h3 className="font-semibold text-foreground mb-2 text-sm">5. Minimal & Corporate</h3>
               <p className="text-xs text-muted-foreground">
                 Clean layout with strong brand presence.
+              </p>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-5 gap-4">
+            <div className="bg-background p-4 rounded-lg border border-border border-l-4 border-l-amber-500">
+              <h3 className="font-semibold text-foreground mb-2 text-sm">6. Trust Badges</h3>
+              <p className="text-xs text-muted-foreground">
+                Showcases credibility with project count & ratings.
+              </p>
+            </div>
+            <div className="bg-background p-4 rounded-lg border border-border border-l-4 border-l-yellow-500">
+              <h3 className="font-semibold text-foreground mb-2 text-sm">7. Urgency & Offer</h3>
+              <p className="text-xs text-muted-foreground">
+                Creates urgency with limited-time free 3D design offer.
+              </p>
+            </div>
+            <div className="bg-background p-4 rounded-lg border border-border border-l-4 border-l-emerald-500">
+              <h3 className="font-semibold text-foreground mb-2 text-sm">8. Guarantee Focus</h3>
+              <p className="text-xs text-muted-foreground">
+                Builds trust with satisfaction guarantee messaging.
+              </p>
+            </div>
+            <div className="bg-background p-4 rounded-lg border border-border border-l-4 border-l-red-500">
+              <h3 className="font-semibold text-foreground mb-2 text-sm">9. Social Proof</h3>
+              <p className="text-xs text-muted-foreground">
+                Features customer testimonials and Google ratings.
+              </p>
+            </div>
+            <div className="bg-background p-4 rounded-lg border border-border border-l-4 border-l-purple-500">
+              <h3 className="font-semibold text-foreground mb-2 text-sm">10. Exclusive Deal</h3>
+              <p className="text-xs text-muted-foreground">
+                VIP exclusivity for Prosperiti Homes residents.
               </p>
             </div>
           </div>
