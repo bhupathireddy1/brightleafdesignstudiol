@@ -15,7 +15,7 @@ interface ContactRequest {
   message: string;
 }
 
-async function sendEmail(to: string[], subject: string, html: string) {
+async function sendEmail(to: string[], subject: string, html: string, fromEmail?: string) {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -23,7 +23,7 @@ async function sendEmail(to: string[], subject: string, html: string) {
       Authorization: `Bearer ${RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: "Brightleaf Design Studio <onboarding@resend.dev>",
+      from: fromEmail || "Brightleaf Design Studio <onboarding@resend.dev>",
       to,
       subject,
       html,
@@ -32,6 +32,7 @@ async function sendEmail(to: string[], subject: string, html: string) {
 
   if (!response.ok) {
     const error = await response.text();
+    console.error("Resend API error:", error);
     throw new Error(`Failed to send email: ${error}`);
   }
 
@@ -60,9 +61,9 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Send email to business owner
+    // Send email to business owner (this will always work since it goes to the Resend account owner)
     const businessEmailResponse = await sendEmail(
-      ["Satish@brightleafdesignstudio.com"],
+      ["brightleaf.hyd@gmail.com"],
       `New Contact Form Submission from ${name}`,
       `
         <div style="font-family: 'Montserrat', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -84,44 +85,56 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Business email sent:", businessEmailResponse);
 
-    // Send confirmation email to customer
-    const customerEmailResponse = await sendEmail(
-      [email],
-      "Thank you for contacting Brightleaf Design Studio!",
-      `
-        <div style="font-family: 'Montserrat', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #6B46C1; font-family: 'Playfair Display', Georgia, serif;">Thank You, ${name}!</h1>
-          <p style="color: #333; font-size: 16px; line-height: 1.6;">
-            We have received your message and appreciate you reaching out to us. 
-            Our team will review your inquiry and get back to you within 24 hours.
-          </p>
-          
-          <div style="background-color: #f8f7f4; padding: 20px; border-radius: 10px; margin: 20px 0;">
-            <p style="color: #666; font-size: 14px;">Here's a copy of your message:</p>
-            <p style="color: #333; padding: 15px; background-color: #fff; border-radius: 5px;">${message}</p>
-          </div>
-          
-          <p style="color: #333; font-size: 16px; line-height: 1.6;">
-            In the meantime, feel free to browse our portfolio or call us directly at 
-            <a href="tel:+919885301292" style="color: #6B46C1;">+91 98853 01292</a>.
-          </p>
-          
-          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-            <p style="color: #333; font-weight: bold;">Brightleaf Design Studio</p>
-            <p style="color: #666; font-size: 14px; margin: 5px 0;">5th Floor, Plot No 60, Masjid Banda, Hyderabad 500084</p>
-            <p style="color: #666; font-size: 14px; margin: 5px 0;">Phone: +91 98853 01292</p>
-            <p style="color: #666; font-size: 14px; margin: 5px 0;">Email: Satish@brightleafdesignstudio.com</p>
-          </div>
-        </div>
-      `
-    );
-
-    console.log("Customer confirmation email sent:", customerEmailResponse);
+    // Try to send confirmation email to customer
+    // This may fail if domain is not verified and customer email is different from Resend account
+    let customerEmailSent = false;
+    try {
+      if (email === "brightleaf.hyd@gmail.com") {
+        // Can send to Resend account owner
+        const customerEmailResponse = await sendEmail(
+          [email],
+          "Thank you for contacting Brightleaf Design Studio!",
+          `
+            <div style="font-family: 'Montserrat', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h1 style="color: #6B46C1; font-family: 'Playfair Display', Georgia, serif;">Thank You, ${name}!</h1>
+              <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                We have received your message and appreciate you reaching out to us. 
+                Our team will review your inquiry and get back to you within 24 hours.
+              </p>
+              
+              <div style="background-color: #f8f7f4; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <p style="color: #666; font-size: 14px;">Here's a copy of your message:</p>
+                <p style="color: #333; padding: 15px; background-color: #fff; border-radius: 5px;">${message}</p>
+              </div>
+              
+              <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                In the meantime, feel free to browse our portfolio or call us directly at 
+                <a href="tel:+919885301292" style="color: #6B46C1;">+91 98853 01292</a>.
+              </p>
+              
+              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                <p style="color: #333; font-weight: bold;">Brightleaf Design Studio</p>
+                <p style="color: #666; font-size: 14px; margin: 5px 0;">5th Floor, Plot No 60, Masjid Banda, Hyderabad 500084</p>
+                <p style="color: #666; font-size: 14px; margin: 5px 0;">Phone: +91 98853 01292</p>
+                <p style="color: #666; font-size: 14px; margin: 5px 0;">Email: Satish@brightleafdesignstudio.com</p>
+              </div>
+            </div>
+          `
+        );
+        console.log("Customer confirmation email sent:", customerEmailResponse);
+        customerEmailSent = true;
+      } else {
+        console.log("Skipping customer confirmation email - domain not verified for external recipients");
+      }
+    } catch (customerError) {
+      console.log("Could not send customer confirmation email:", customerError);
+    }
 
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: "Emails sent successfully" 
+        message: "Contact form submitted successfully",
+        customerEmailSent 
       }),
       {
         status: 200,
