@@ -43,7 +43,7 @@ const Navbar = () => {
           <img
             src={logo}
             alt="Brightleaf Design Studio logo"
-            className={`transition-all duration-300 w-auto object-contain ${isScrolled ? "h-20 md:h-16" : "h-16 md:h-18 lg:h-20"}`}
+            className={`transition-all duration-300 w-auto object-contain ${isScrolled ? "h-14 md:h-16" : "h-20 md:h-24 lg:h-28"}`}
           />
         </a>
 
