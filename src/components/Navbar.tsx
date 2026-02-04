@@ -28,10 +28,10 @@ const Navbar = () => {
     name: "Contact",
     href: "#contact"
   }];
-  return <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "bg-card/98 backdrop-blur-lg shadow-lg py-2" : "bg-transparent py-6"}`}>
-      <div className="container flex items-center justify-between px-4 md:px-8">
+  return <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? "bg-card/98 backdrop-blur-lg shadow-lg py-2" : "bg-transparent py-4"}`}>
+      <div className="container flex items-center justify-between px-4 md:px-6">
         <a href="#home" className="flex items-center lg:flex-none flex-1 justify-center lg:justify-start">
-          <img src={logo} alt="Brightleaf Design Studio logo" className={`transition-all duration-500 ${isScrolled ? "h-10 md:h-12" : "h-16 md:h-20 lg:h-24"}`} />
+          <img src={logo} alt="Brightleaf Design Studio logo" className={`transition-all duration-300 w-auto object-contain ${isScrolled ? "h-14 md:h-16" : "h-16 md:h-18 lg:h-20"}`} />
         </a>
 
         {/* Desktop Navigation */}
