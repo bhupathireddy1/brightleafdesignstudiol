@@ -62,7 +62,7 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            
+            <a
               key={link.name}
               href={link.href}
               className={`text-sm font-semibold transition-colors duration-300 tracking-wide ${
@@ -102,7 +102,7 @@ const Navbar = () => {
       >
         <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
           {navLinks.map((link) => (
-            
+            <a
               key={link.name}
               href={link.href}
               onClick={() => setIsMobileMenuOpen(false)}
