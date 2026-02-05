@@ -41,9 +41,7 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled 
-          ? "bg-card/98 backdrop-blur-lg shadow-lg py-2" 
-          : "bg-transparent py-4 md:py-6"
+        isScrolled ? "bg-card/98 backdrop-blur-lg shadow-lg py-2" : "bg-transparent py-4 md:py-6"
       }`}
     >
       <div className="container flex items-center justify-between px-4 md:px-6">
@@ -52,9 +50,7 @@ const Navbar = () => {
             src={logo}
             alt="Brightleaf Design Studio logo"
             className={`transition-all duration-300 w-auto object-contain ${
-              isScrolled 
-                ? "h-16 md:h-20" 
-                : "h-24 md:h-28 lg:h-32"
+              isScrolled ? "h-18 md:h-20" : "h-24 md:h-28 lg:h-32"
             }`}
           />
         </a>
@@ -66,9 +62,7 @@ const Navbar = () => {
               key={link.name}
               href={link.href}
               className={`text-sm font-semibold transition-colors duration-300 tracking-wide ${
-                isScrolled 
-                  ? "text-foreground hover:text-primary" 
-                  : "text-white hover:text-white/70"
+                isScrolled ? "text-foreground hover:text-primary" : "text-white hover:text-white/70"
               }`}
             >
               {link.name}
@@ -85,9 +79,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className={`lg:hidden p-2 transition-colors ${
-            isScrolled ? "text-foreground" : "text-white"
-          }`}
+          className={`lg:hidden p-2 transition-colors ${isScrolled ? "text-foreground" : "text-white"}`}
           aria-label="Toggle menu"
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
